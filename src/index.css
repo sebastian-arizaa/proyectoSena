@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+/* Theme 1 */
+
+@theme {
+  --color-primary: oklch(0.627 0.194 149.214);
+  --color-primary-hover: oklch(0.527 0.154 150.069);
+  --color-primary-focus: oklch(0.527 0.154 150.069);
+
+  --color-secondary:  oklch(0.872 0.01 258.338);
+  --color-secondary-hover: oklch(0.707 0.022 261.325);
+  --color-secondary-focus: oklch(0.707 0.022 261.325);
+
+  --color-third: white;
+  --color-third-hover: oklch(0.928 0.006 264.531);
+  --color-third-focus : white;
+
+  --color-primary-text: white;
+  --color-secondary-text: black;
+}
+
+@theme {
+  --animate-notif: notif 2s ease-in-out forwards;
+  @keyframes notif {
+    0%,
+    100% {
+      transform: translateY(0%);
+    }
+    30%, 90% {
+      transform: translateY(100%);
+    }
+  }
+}
+
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgb(179, 179, 179);
+  width: 10px;
+
+}
+
+*::-webkit-scrollbar {
+  background-color: rgb(219, 219, 219);
+  width: 8px;
+}
+
+option {
+  max-width:150px;
+  text-overflow: clip;
+  font-size: 12px;
+  /* height: 10p; */
+}
+
+
+/* Theme 2 */
+
+/* @theme {
+  --color-primary: oklch(0.646 0.222 41.116);
+  --color-primary-hover: oklch(0.553 0.195 38.402);
+
+  --color-secondary:  oklch(0.872 0.01 258.338);
+  --color-secondary-hover :  oklch(0.707 0.022 261.325);
+} */
