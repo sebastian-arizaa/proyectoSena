@@ -3,7 +3,7 @@ import { Menu } from './Menu';
 import MenuButton from './MenuButton';
 
 export function MenuContainer() {
-  console.log('Renderiza MenuContainer')
+  // console.log('Renderiza MenuContainer')
 
   const [isMenuActive, setIsMenuActive] = useState(false)
   

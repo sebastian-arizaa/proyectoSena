@@ -8,10 +8,10 @@ interface Props {
 }
 
 export function BaseLayout({children}: Props) {
-  console.log('Renderiza BaseLayout')
+  // console.log('Renderiza BaseLayout')
   const isDeleting = false
   useEffect(()=> {
-    console.log('Termina de renderizar baseLayout')
+    // console.log('Termina de renderizar baseLayout')
   })
   return (
     <div className='relative flex flex-col justify-between h-screen'>

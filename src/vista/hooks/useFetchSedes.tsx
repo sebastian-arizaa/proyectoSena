@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { Sede } from '../types'
+import { Sede, Tipo } from '../types'
 
 interface Props {
-  currentDepartamento: string
+  currentDepartamento: string,
+  tipo?: Tipo
 }
 
-export function useFetchSedes({currentDepartamento}: Props) {
+export function useFetchSedes({currentDepartamento, tipo=''}: Props) {
   const [sedes, setSedes] = useState<Sede[]>([])
-  console.log('RENDERIZA ESTE FECTH CDE USE FETCHESSS =>', currentDepartamento)
+  // console.log('RENDERIZA ESTE FECTH CDE USE FETCHESSS =>', currentDepartamento)
   useEffect(()=> {
-    if(currentDepartamento) {
+    console.log('EL TIPO QUE LLEGOOOOOOOOOO: ', tipo)
+    if(currentDepartamento && tipo != 'Departamento') {
       const getSedes = async () => {
+        console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@hace fetch de sedes >@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
         const {data} = await axios<Sede[]>(`http://localhost:3000/sedes/por-departamento/${currentDepartamento}`)
         setSedes(data)
       }
