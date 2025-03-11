@@ -5,37 +5,28 @@ import { MenuContainer } from '../componentes/MenuContainer';
 import { Form } from '../componentes/Form';
 import { useState } from 'react';
 import { Select } from '../componentes/Select';
-import { Sede } from '../types';
+import { Formacion, Sede } from '../types';
 import { useFetchDepartamentos } from '../hooks/useFetchDepartamentos';
 import { useFetchSedes } from '../hooks/useFetchSedes';
-import { useFetchFormaciones } from '../hooks/useFetchFormaciones';
+import axios from 'axios';
+
+// type TipoFormacion = 'Tegnologo' | 'Tecnico' | ''
+// type Date = `${string}-${string}-${string}`
 
 export function CrearFormacion() {
-  const [inputNombreValue, setInputNombreValue] = useState('')
-  const [inputApellidosValue, setInputApellidosValue] = useState('')
-  const [inputNumeroIdentificacionValue, setInputNumeroIdentificacionValue] = useState('')
-  const [inputCelularValue, setInputCelularValue] = useState('')
-  const [inputEmailValue, setInputEmailValue] = useState('')
-
+  const [inputNombreFormacionValue, setInputNombreFormacionValue] = useState('')
+  const [inputInstructoresValue, setInputInstructoresValue] = useState('')
+  const [inputHorarioValue, setInputHorarioValue] = useState('')
+  const [inputFechaInicioValue, setInputFechaInicioValue] = useState('')
+  const [inputFechaFinValue, setInputFechaFinValue] = useState('')
+  console.log('Renderiza')
   const [departamentos] = useFetchDepartamentos()
   const [currentDepartamento, setCurrentDepartamento] = useState<string>('')
   const [sedes] = useFetchSedes({currentDepartamento})
   const [currentSede, setCurrentSede] = useState<Sede | null>(null)
-  const {formaciones} = useFetchFormaciones({currentSede, sedes})
-  const [currentFormacion, setCurrentFormacion] = useState<string>('')
-  console.log('🚀 ~ CrearAdministrador ~ currentFormacion:', currentFormacion)
-
-  const crear = () => {
-    console.log('Procede a guardar')
-  }
-
-
-  const returnOnClicks = () => {
-    return {
-      onClickCrear:  crear,     
-    }
-  }
-
+  const [currentTipoFormacion, setCurrentTipoFormacion] = useState<string>('')
+  console.log('🚀 ~ CrearFormacion ~ currentTipoFormacion:', currentTipoFormacion)
+ 
   const selectDepartamento = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value
     setCurrentDepartamento(value)
@@ -47,29 +38,65 @@ export function CrearFormacion() {
     if(sedeEncontrada) setCurrentSede(sedeEncontrada) 
   }
 
-  const selectFormacion = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const selectTipoFormacion = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value
-    setCurrentFormacion(value) 
+    setCurrentTipoFormacion(value)
   }
+
+  const limpiarFormulario = () => {
+    setInputNombreFormacionValue('')
+    setInputInstructoresValue('')
+    setInputHorarioValue('')
+    setInputFechaInicioValue('')
+    setInputFechaFinValue('')
+    setCurrentDepartamento('')
+    setCurrentSede(null)
+    setCurrentTipoFormacion('')
+  }
+
+  const crear = async () => {
+    console.log('Procede a guardar')
+    if(!inputNombreFormacionValue) return 
+    if(!currentTipoFormacion) return
+    if(!inputInstructoresValue) return
+    if(!inputFechaInicioValue) return
+    if(!inputFechaFinValue) return
+    if(!inputHorarioValue) return
+    if(!currentSede) return
+
+    const formacion: Formacion = {
+      nombre: inputNombreFormacionValue,
+      numeroIdentificacion: 0,
+      tipo: currentTipoFormacion,
+      instructores: inputInstructoresValue,
+      fechaInicio: inputFechaInicioValue,
+      fechaFin: inputFechaFinValue,
+      horario: inputHorarioValue,
+      idSede: currentSede?.numeroIdentificacion
+    }
+
+    console.log(formacion)
+    const {status} = await axios.post('http://localhost:3000/formaciones', formacion)
+    if(status == 200) {
+      console.log('Se hizo mi rey')
+      limpiarFormulario()
+    }
+  }
+
+
+  const returnOnClicks = () => {
+    return {
+      onClickCrear:  crear,     
+    }
+  }
+
+ 
 
   return (
     <BaseLayout>
       <ContentLayout>
         <MenuContainer/>
-        <Form isEditing={true} onClicks={returnOnClicks()}  isCreating={true} title="Crear Formacion">
-          {/* <div className='flex items-center w-full'>
-            <Select width='w-96' title='Formacion'  options={['Santander']}/>
-          </div>
-
-          <div className='flex gap-4'>
-            <div className='flex items-center w-full'>
-              <Select onChange={selectDepartamento} title='Departamento' options={departamentos}/>
-            </div>
-            <div className='flex items-center w-full'>
-              <Select onChange={selectSede} title='Sede' options={sedes.map(sede => sede.nombre)} />
-            </div>
-          </div> */}
-
+        <Form isEditing={true} onClicks={returnOnClicks()}  isCreating={true} title="Crear Formación">
           <div className='flex gap-4'>
             <div className='flex items-center w-full'>
               <Select onChange={selectDepartamento} title='Departamento' options={departamentos}/>
@@ -78,74 +105,35 @@ export function CrearFormacion() {
               <Select onChange={selectSede} title='Sede' options={sedes.map(sede => sede.nombre)} />
             </div>
           </div>
-          <div className='flex items-center w-full'>
-            <Select onChange={selectFormacion} width='w-full' title='Formacion'  options={formaciones.map(formacion => formacion.nombre)}/>
-          </div> 
+          
+          <div className='flex gap-4'>
+            <Select onChange={selectTipoFormacion} width='w-full' title='Tipo' options={['Tegnologo', 'Tecnico']}/>
+          </div>
 
 
           <div className='flex gap-4'>
             <div className='flex flex-col w-full'>
-              <p>Tipo</p>
-              <Input  value='Tegnologo ' type='text'/>
-            </div>
-            <div className='flex flex-col w-full'>
-              <p>N. Ficha</p>
-              <Input  type='text'/>
+              <p>Nombre De Formación</p>
+              <Input value={inputNombreFormacionValue} setValue={setInputNombreFormacionValue} type='text'/>
             </div>
           </div>
 
           <div className='flex flex-col w-full'>
             <p>Instructores</p>
-            <Input type='text'/>
+            <Input value={inputInstructoresValue} setValue={setInputInstructoresValue} type='text'/>
           </div>
           <div className='flex flex-col w-full'>
             <p>Horario</p>
-            <Input value='Lunes - Viernes 12:00 - 18:00' type='text'/>
+            <Input value={inputHorarioValue} setValue={setInputHorarioValue} type='text'/>
           </div>
           <div className='flex flex-col w-full'>
             <p>Fecha de Inicio del programa</p>
-            <Input value='11-04-2025' type='date'/>
+            <Input value={inputFechaInicioValue} setValue={setInputFechaInicioValue} type='date'/>
           </div>
           <div className='flex flex-col w-full'>
             <p>Fecha de Fin del programa</p>
-            <Input value='2005-04-12' type='date'/>
+            <Input value={inputFechaFinValue} setValue={setInputFechaFinValue} type='date'/>
           </div>
-
-          {/* <div className='flex gap-4'>
-            <div className='flex flex-col w-full'>
-              <p>Nombre</p>
-              <Input setValue={setInputNombreValue} value={inputNombreValue} type='text'/>
-            </div>
-            <div className='flex flex-col w-full'>
-              <p>Apellidos</p>
-              <Input setValue={setInputApellidosValue} value={inputApellidosValue} type='text'/>
-            </div>
-          </div>
-          <div className='flex flex-col w-full'>
-            <p>N. Identificacion</p>
-            <Input setValue={setInputNumeroIdentificacionValue} value={inputNumeroIdentificacionValue} type='text'/>
-          </div>
-          <div className='flex flex-col w-full'>
-            <p>Celular</p>
-            <Input setValue={setInputCelularValue} value={inputCelularValue ?? ''} type='text'/>
-          </div>
-          <div className='flex flex-col w-full'>
-            <p>Email</p>
-            <Input setValue={setInputEmailValue} value={inputEmailValue ?? ''} type='text'/>
-          </div>
-
-
-          <div className='flex gap-4'>
-            <div className='flex items-center w-full'>
-              <Select onChange={selectDepartamento} title='Departamento' options={departamentos}/>
-            </div>
-            <div className='flex items-center w-full'>
-              <Select onChange={selectSede} title='Sede' options={sedes.map(sede => sede.nombre)} />
-            </div>
-          </div>
-          <div className='flex items-center w-full'>
-            <Select onChange={selectFormacion} width='w-full' title='Formacion'  options={formaciones.map(formacion => formacion.nombre)}/>
-          </div>   */}
         </Form>
       </ContentLayout>
     </BaseLayout>

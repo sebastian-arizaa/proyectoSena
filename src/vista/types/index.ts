@@ -1,5 +1,6 @@
 export type password = 'password'
 export type text = 'text'
+export type Date = `${string}-${string}-${string}` | ''
 
 export type Departamentos = {
   id: number,
@@ -19,8 +20,8 @@ export type Formacion = {
   tipo: string,
   instructores: string,
   horario: string,
-  fechaInicio: `${string}-${string}-${string}`,
-  fechaFin: `${string}-${string}-${string}`,
+  fechaInicio: string,
+  fechaFin: string,
   idSede: number
 }
 

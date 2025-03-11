@@ -27,6 +27,10 @@ export function Datos() {
 
   const selectSede = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value
+    if(value == '') {
+      setCurrentSede(null)
+      setFormacionesFiltradas([])
+    }
     const sedeEncontrada = sedes.find(sede => sede.nombre == value)
     if(sedeEncontrada) setCurrentSede(sedeEncontrada) 
   }
