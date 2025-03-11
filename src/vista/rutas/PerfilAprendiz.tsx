@@ -23,11 +23,9 @@ export function PerfilAprendiz() {
   const [inputCelularValue, setInputCelularValue] = useState('')
   const [inputEmailValue, setInputEmailValue] = useState('')
 
- 
-
   const [departamentos] = useFetchDepartamentos()
   const [currentDepartamento, setCurrentDepartamento] = useState<string>('')
-  const [sedes] = useFetchSedes({currentDepartamento})
+  const {sedes} = useFetchSedes({currentDepartamento})
   const [currentSede, setCurrentSede] = useState<Sede | null>(null)
   const {formaciones} = useFetchFormaciones({currentSede, sedes})
   const [currentFormacion, setCurrentFormacion] = useState<string>('')
@@ -44,18 +42,6 @@ export function PerfilAprendiz() {
   }
 
 
-  // const rraa = () => {
-  //   const myAprendiz: Aprendiz = {
-  //     numeroIdentificacion: inputNumeroIdentificacionValue,
-  //     nombre: inputNombreValue,
-  //     apellidos: inputApellidosValue,
-  //     celular: inputCelularValue,
-  //     email: inputEmailValue,
-  //     idFormacion: ''
-  //   }
-
-  //   console.log(myAprendiz)
-  // }
 
   const toggleEdit = (isEditing: boolean) => {
     setIsEditing(isEditing)

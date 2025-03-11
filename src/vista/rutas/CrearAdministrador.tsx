@@ -22,7 +22,7 @@ export function CrearAdministrador() {
 
   const [departamentos] = useFetchDepartamentos()
   const [currentDepartamento, setCurrentDepartamento] = useState<string>('')
-  const [sedes] = useFetchSedes({currentDepartamento, tipo})
+  const {sedes, setSedes} = useFetchSedes({currentDepartamento, tipo})
   const [currentSede, setCurrentSede] = useState<Sede | null>(null)
 
   const selectTipo = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -35,6 +35,7 @@ export function CrearAdministrador() {
 
   const selectDepartamento = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value
+    if(value == '') setSedes([])
     setCurrentDepartamento(value)
   }
 
@@ -56,7 +57,6 @@ export function CrearAdministrador() {
   }
 
   const crear = async () => {
-    console.log('Procede a guardar')
     if(tipo == 'Departamento') {
       if(!inputNombreValue) return 
       if(!inputApellidosValue) return
@@ -146,7 +146,7 @@ export function CrearAdministrador() {
             <Input value={inputPasswordValue} setValue={setInputPasswordValue} type='password'/>
           </div>
           <div>
-            <Select width='w-full' onChange={selectTipo} title='Tipo' options={['Departamento', 'Sede']}/>
+            <Select width='w-full' value={tipo} onChange={selectTipo} title='Tipo' options={['Departamento', 'Sede']}/>
           </div>
           {renderPorTipo()}
         </Form>

@@ -15,7 +15,7 @@ import { useFetchFormaciones } from '../hooks/useFetchFormaciones';
 export function Datos() {
   const [departamentos] = useFetchDepartamentos()
   const [currentDepartamento, setCurrentDepartamento] = useState<string>('')
-  const [sedes] = useFetchSedes({currentDepartamento})
+  const {sedes} = useFetchSedes({currentDepartamento})
   const [currentSede, setCurrentSede] = useState<Sede | null>(null)
   const {formaciones, formacionesFiltradas, setFormacionesFiltradas} = useFetchFormaciones({currentSede, sedes})
   const [inputFormacionValue, setInputFormacionValue] = useState('')
@@ -30,9 +30,10 @@ export function Datos() {
     if(value == '') {
       setCurrentSede(null)
       setFormacionesFiltradas([])
+    }else {
+      const sedeEncontrada = sedes.find(sede => sede.nombre == value)
+      if(sedeEncontrada) setCurrentSede(sedeEncontrada) 
     }
-    const sedeEncontrada = sedes.find(sede => sede.nombre == value)
-    if(sedeEncontrada) setCurrentSede(sedeEncontrada) 
   }
 
   const searchFormacion = () => {

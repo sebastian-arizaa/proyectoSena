@@ -19,16 +19,15 @@ export function CrearFormacion() {
   const [inputHorarioValue, setInputHorarioValue] = useState('')
   const [inputFechaInicioValue, setInputFechaInicioValue] = useState('')
   const [inputFechaFinValue, setInputFechaFinValue] = useState('')
-  console.log('Renderiza')
   const [departamentos] = useFetchDepartamentos()
   const [currentDepartamento, setCurrentDepartamento] = useState<string>('')
-  const [sedes] = useFetchSedes({currentDepartamento})
+  const {sedes, setSedes} = useFetchSedes({currentDepartamento})
   const [currentSede, setCurrentSede] = useState<Sede | null>(null)
   const [currentTipoFormacion, setCurrentTipoFormacion] = useState<string>('')
-  console.log('🚀 ~ CrearFormacion ~ currentTipoFormacion:', currentTipoFormacion)
  
   const selectDepartamento = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value
+    if(value == '') setSedes([])
     setCurrentDepartamento(value)
   }
 
@@ -55,7 +54,6 @@ export function CrearFormacion() {
   }
 
   const crear = async () => {
-    console.log('Procede a guardar')
     if(!inputNombreFormacionValue) return 
     if(!currentTipoFormacion) return
     if(!inputInstructoresValue) return
@@ -75,10 +73,8 @@ export function CrearFormacion() {
       idSede: currentSede?.numeroIdentificacion
     }
 
-    console.log(formacion)
     const {status} = await axios.post('http://localhost:3000/formaciones', formacion)
     if(status == 200) {
-      console.log('Se hizo mi rey')
       limpiarFormulario()
     }
   }

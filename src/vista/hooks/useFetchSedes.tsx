@@ -22,5 +22,5 @@ export function useFetchSedes({currentDepartamento, tipo=''}: Props) {
     }
   }, [currentDepartamento])
 
-  return [sedes]
+  return {sedes, setSedes}
 }
