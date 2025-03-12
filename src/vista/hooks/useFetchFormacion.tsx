@@ -29,5 +29,6 @@ const formacionCompletoBase: FormacionCompleto = {
   nombreDepartamento: '',
   nombreSede: '',
   numeroIdentificacion: '',
-  tipo: ''
+  tipo: '',
+  idSede: ''
 }

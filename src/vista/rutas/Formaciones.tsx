@@ -10,9 +10,11 @@ import { Sede } from '../types';
 import { useFetchDepartamentos } from '../hooks/useFetchDepartamentos';
 import { useFetchSedes } from '../hooks/useFetchSedes';
 import { useFetchFormaciones } from '../hooks/useFetchFormaciones';
+import { useNavigate } from 'react-router';
 
 
 export function Datos() {
+  const navigate = useNavigate()
   const [departamentos] = useFetchDepartamentos()
   const [currentDepartamento, setCurrentDepartamento] = useState<string>('')
   const {sedes} = useFetchSedes({currentDepartamento})
@@ -55,6 +57,9 @@ export function Datos() {
                 <Input value={inputFormacionValue} setValue={setInputFormacionValue} type='text'/>
               </div>
               <Button onClick={searchFormacion} type='primary'>Buscar</Button>
+            </div>
+            <div className='flex items-center h-full'>
+             <Button onClick={() => navigate('/crearformacion')} type='primary'>Crear</Button>
             </div>
           </div>
           <Table type='formacion' itemsProps={formacionesFiltradas}/>

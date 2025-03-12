@@ -5,17 +5,18 @@ import { MenuContainer } from '../componentes/MenuContainer';
 import { Form } from '../componentes/Form';
 import { Select } from '../componentes/Select';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { useFetchFormacion } from '../hooks/useFetchFormacion';
 import { useFetchDepartamentos } from '../hooks/useFetchDepartamentos';
-import { Sede } from '../types';
+import { Formacion, Sede } from '../types';
 import { useFetchSedes } from '../hooks/useFetchSedes';
+import axios from 'axios';
 
 export function PerfilFormacion() {
-  const {numeroIdentificacion} = useParams()
-  console.log(numeroIdentificacion)
-  const [formacion] = useFetchFormacion({numeroIdentificacion})
+  const navigate = useNavigate()   
 
+  const {numeroIdentificacion} = useParams()
+  const [formacion] = useFetchFormacion({numeroIdentificacion})
 
   const [inputNombreFormacionValue, setInputNombreFormacionValue] = useState('')
   const [inputInstructoresValue, setInputInstructoresValue] = useState('')
@@ -73,22 +74,47 @@ export function PerfilFormacion() {
     setIsEditing(isEditing)
   }
 
-  const crear = () => {
-    console.log('Procede a guardar')
+
+  const edit = async() => {
+    if(!inputNombreFormacionValue) return
+    if(!currentTipoFormacion) return
+    if(!inputNombreFormacionValue) return
+    if(!inputInstructoresValue) return
+    if(!inputHorarioValue) return
+    if(!inputFechaInicioValue) return
+    if(!inputFechaFinValue) return
+
+    const newFormacion: Formacion = {
+      nombre: inputNombreFormacionValue,
+      tipo: currentTipoFormacion,
+      instructores: inputInstructoresValue,
+      horario: inputHorarioValue,
+      fechaInicio: inputFechaInicioValue,
+      fechaFin: inputFechaFinValue,
+      numeroIdentificacion: formacion.numeroIdentificacion,
+      idSede: formacion.idSede
+    }
+
+    const {status} = await axios.patch(`http://localhost:3000/formaciones/${numeroIdentificacion}`, newFormacion)
+    if(status == 200) {
+      navigate('/formaciones')
+      console.log('Actualizoo')
+      console.log('=========================')
+      console.log(newFormacion)
+
+    }
   }
 
-  const edit = () => {
-    console.log('Procede a Actulizar')
-    
-  }
-
-  const eliminar = () => {
-    console.log('Procede a eliminar')
+  const eliminar = async() => {
+    const {status} = await axios.delete(`http://localhost:3000/formaciones/${numeroIdentificacion}`)
+    if(status == 200) {
+      navigate('/formaciones')
+      console.log('Se eliminio')
+    }
   }
 
   const returnOnClicks = () => {
     return {
-      onClickCrear: crear,     
       onClickActulizar: edit,     
       onClickEliminar: eliminar,     
     }
@@ -101,10 +127,10 @@ export function PerfilFormacion() {
         <Form onClicks={returnOnClicks()} isCreating={false} toggleEdit={toggleEdit} isEditing={isEditing} title="Perfil Formacion">
           <div className='flex gap-4'>
             <div className='flex items-center w-full'>
-              <Select disabled={!isEditing} value={currentDepartamento} onChange={selectDepartamento} title='Departamento' options={departamentos}/>
+              <Select disabled={true} value={currentDepartamento} onChange={selectDepartamento} title='Departamento' options={departamentos}/>
             </div>
             <div className='flex items-center w-full'>
-              <Select disabled={!isEditing} value={currentSede?.nombre} onChange={selectSede} title='Sede' options={sedes.map(sede => sede.nombre)} />
+              <Select disabled={true} value={currentSede?.nombre} onChange={selectSede} title='Sede' options={sedes.map(sede => sede.nombre)} />
             </div>
           </div>
           

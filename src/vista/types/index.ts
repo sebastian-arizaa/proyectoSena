@@ -22,7 +22,7 @@ export type Formacion = {
   horario: string,
   fechaInicio: string,
   fechaFin: string,
-  idSede: number
+  idSede: string
 }
 
 export type Admin = {
@@ -57,7 +57,7 @@ export type AprendizCompleto = Aprendiz & {
   nombreDepartamento: string 
 }
 
-export type FormacionCompleto = Omit<Formacion, 'idSede'> & {
+export type FormacionCompleto = Formacion & {
   nombreDepartamento: string,
   nombreSede: string
 }

@@ -42,7 +42,7 @@ export class Formaciones {
   }
 
   static async traerCompleto(numeroIdentificacionFormacion) {
-    const query = "select f.numeroIdentificacion, f.nombre, f.tipo, f.instructores, f.horario, f.fechaInicio, f.fechaFin, s.nombre As nombreSede, s.nombreDepartamento from formaciones f inner join sedes s on f.idSede = s.numeroIdentificacion WHERE f.numeroIdentificacion = ?"
+    const query = "select f.numeroIdentificacion, f.nombre, f.tipo, f.instructores, f.horario, f.fechaInicio, f.fechaFin, f.idSede, s.nombre As nombreSede, s.nombreDepartamento from formaciones f inner join sedes s on f.idSede = s.numeroIdentificacion WHERE f.numeroIdentificacion = ?"
     return new Promise((resolve, reject) => { 
       connection.query(query, [numeroIdentificacionFormacion], (err, response) => {
         if(err) console.log(err)
