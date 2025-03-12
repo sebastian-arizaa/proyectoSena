@@ -22,7 +22,7 @@ export function ItemAdminSede({Icon, itemData}: Props) {
   }, [])
 
   return (
-    <div onClick={()=> navigate(`/perfilAdministrador/departamento/${itemData.numeroIdentificacion}`)} className='flex justify-between w-full h-12 px-4 py-2 rounded cursor-pointer bg-gray-200  hover:bg-gray-300 active:bg-gray-200   '>
+    <div onClick={()=> navigate(`/perfilAdministrador/Sede/${itemData.numeroIdentificacion}`)} className='flex justify-between w-full h-12 px-4 py-2 rounded cursor-pointer bg-gray-200  hover:bg-gray-300 active:bg-gray-200   '>
       <div className='flex items-center gap-4'>
         <Icon/>
         <p className='flex items-center'>{itemData.nombre}</p>

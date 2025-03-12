@@ -18,11 +18,17 @@ export class ControladorAdminSede {
     res.json(data)
   }
 
-    static async traerPorNombre(req, res) {
-      const {nombre} = req.params
-      const data = await AdminSede.traerPorNombre(nombre)
-      res.json(data)
-    }
+  static async traerPorNombre(req, res) {
+    const {nombre} = req.params
+    const data = await AdminSede.traerPorNombre(nombre)
+    res.json(data)
+  }
+
+  static async traerCompleto(req, res) {
+    const {numeroIdentificacion} = req.params
+    const data = await AdminSede.traerCompleto(numeroIdentificacion)
+    res.json(data)
+  }
 
   static async eliminar (req, res) {
     const {numeroIdentificacion} = req.params

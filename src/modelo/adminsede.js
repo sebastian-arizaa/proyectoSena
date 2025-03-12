@@ -41,6 +41,16 @@ export class AdminSede {
     })
   }
 
+  static async traerCompleto(numeroIdentificacion) {
+    const query = "SELECT a.numeroIdentificacion, a.nombre, a.apellidos, a.password, s.nombre AS nombreSede, s.nombreDepartamento from adminsede a INNER JOIN sedes s ON a.idSede_as = s.numeroIdentificacion WHERE a.numeroIdentificacion = ?"
+    return new Promise((resolve, reject)=> {
+      connection.query(query, [numeroIdentificacion], (err, response) => {
+        if(err) console.log("Err: ", err)
+        resolve(response)
+      })
+    })
+  }
+
   static async eliminar(numeroIdentificacion) {
     const query = "DELETE FROM adminsede WHERE numeroIdentificacion = ?"
     return new Promise((resolve, reject) => { 

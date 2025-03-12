@@ -15,7 +15,7 @@ export type Sede = {
 }
 
 export type Formacion = {
-  numeroIdentificacion: number,
+  numeroIdentificacion: string,
   nombre: string,
   tipo: string,
   instructores: string,
@@ -58,6 +58,11 @@ export type AprendizCompleto = Omit<Aprendiz, 'idFormacion'> & {
 }
 
 export type FormacionCompleto = Omit<Formacion, 'idSede'> & {
+  nombreDepartamento: string,
+  nombreSede: string
+}
+
+export type AdminSedeCompleto = Omit<AdminSede, 'idSede_as'> & {
   nombreDepartamento: string,
   nombreSede: string
 }

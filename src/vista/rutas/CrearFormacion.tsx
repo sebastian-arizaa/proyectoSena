@@ -64,7 +64,7 @@ export function CrearFormacion() {
 
     const formacion: Formacion = {
       nombre: inputNombreFormacionValue,
-      numeroIdentificacion: 0,
+      numeroIdentificacion: '',
       tipo: currentTipoFormacion,
       instructores: inputInstructoresValue,
       fechaInicio: inputFechaInicioValue,
