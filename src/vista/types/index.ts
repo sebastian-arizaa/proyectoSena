@@ -51,15 +51,15 @@ export type Aprendiz = {
   idFormacion: string | null
 }
 
-export type AprendizCompleto = {
-  numeroIdentificacion: string,
-  nombre: string,
-  apellidos: string,
-  celular: string | null,
-  email: string | null,
+export type AprendizCompleto = Omit<Aprendiz, 'idFormacion'> & {
   nombreFormacion: string 
   nombreSede: string 
   nombreDepartamento: string 
+}
+
+export type FormacionCompleto = Omit<Formacion, 'idSede'> & {
+  nombreDepartamento: string,
+  nombreSede: string
 }
 
 export type Tipo = 'Departamento' | 'Sede' | ''

@@ -4,66 +4,140 @@ import { ContentLayout } from '../componentes/layouts/ContentLayout';
 import { MenuContainer } from '../componentes/MenuContainer';
 import { Form } from '../componentes/Form';
 import { Select } from '../componentes/Select';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
+import { useFetchFormacion } from '../hooks/useFetchFormacion';
+import { useFetchDepartamentos } from '../hooks/useFetchDepartamentos';
+import { Sede } from '../types';
+import { useFetchSedes } from '../hooks/useFetchSedes';
 
 export function PerfilFormacion() {
+  const {numeroIdentificacion} = useParams()
+  console.log(numeroIdentificacion)
+  const [formacion] = useFetchFormacion({numeroIdentificacion})
+
+
+  const [inputNombreFormacionValue, setInputNombreFormacionValue] = useState('')
+  const [inputInstructoresValue, setInputInstructoresValue] = useState('')
+  const [inputHorarioValue, setInputHorarioValue] = useState('')
+  const [inputFechaInicioValue, setInputFechaInicioValue] = useState('')
+  const [inputFechaFinValue, setInputFechaFinValue] = useState('')
+  const [departamentos] = useFetchDepartamentos()
+  const [currentDepartamento, setCurrentDepartamento] = useState<string>('')
+  console.log('🚀 ~ PerfilFormacion ~ currentDepartamento:', currentDepartamento)
+  const {sedes, setSedes} = useFetchSedes({currentDepartamento})
+  const [currentSede, setCurrentSede] = useState<Sede | null>(null)
+  const [currentTipoFormacion, setCurrentTipoFormacion] = useState<string>('')
+
   const [isEditing, setIsEditing] = useState(false)
   console.log(isEditing)
-  // new Date($0.value).toLocaleDateString('en-es')
+
+  console.log('🚀 ~ PerfilFormacion ~ formacion:', formacion)
+  useEffect(()=> {
+
+    console.log('from use EFEcccc,', formacion)
+    setInputNombreFormacionValue(formacion?.nombre)
+    setInputInstructoresValue(formacion?.instructores)
+    setInputHorarioValue(formacion?.horario)
+    setInputFechaInicioValue(formacion?.fechaInicio.slice(0, 10))
+    setInputFechaFinValue(formacion?.fechaFin.slice(0, 10))
+    setCurrentTipoFormacion(formacion?.tipo)
+    setCurrentDepartamento(formacion?.nombreDepartamento)
+  }, [formacion])
+
+  useEffect(()=> {
+    const sedeEncontrada = sedes.find(sede => sede.nombre == formacion.nombreSede)
+    if(sedeEncontrada) setCurrentSede(sedeEncontrada)
+  }, [sedes])
+
+  const selectDepartamento = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value
+    if(value == '') setSedes([])
+    setCurrentDepartamento(value)
+  }
+
+  const selectSede = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value
+    const sedeEncontrada = sedes.find(sede => sede.nombre == value)
+    if(sedeEncontrada) setCurrentSede(sedeEncontrada) 
+  }
+
+  const selectTipoFormacion = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value
+    setCurrentTipoFormacion(value)
+  }
+
+
 
   const toggleEdit = (isEditing: boolean) => {
     setIsEditing(isEditing)
+  }
+
+  const crear = () => {
+    console.log('Procede a guardar')
+  }
+
+  const edit = () => {
+    console.log('Procede a Actulizar')
+    
+  }
+
+  const eliminar = () => {
+    console.log('Procede a eliminar')
+  }
+
+  const returnOnClicks = () => {
+    return {
+      onClickCrear: crear,     
+      onClickActulizar: edit,     
+      onClickEliminar: eliminar,     
+    }
   }
 
   return (
     <BaseLayout>
       <ContentLayout>
         <MenuContainer/>
-        <Form toggleEdit={toggleEdit} isEditing={isEditing} title="Perfil Formacion">
-          {/* <div className='flex flex-col w-full'>
-            <p>Nombre</p>
-            <Input disabled={!isEditing} value='Sebastian' type='text'/>
-          </div> */}
-
-          <div className='flex items-center w-full'>
-            <Select width='w-96' title='Formacion' disabled={isEditing} options={['Santander']}/>
-          </div>
-
+        <Form onClicks={returnOnClicks()} isCreating={false} toggleEdit={toggleEdit} isEditing={isEditing} title="Perfil Formacion">
           <div className='flex gap-4'>
             <div className='flex items-center w-full'>
-              <Select title='Departamento' disabled={isEditing} options={['Santander']}/>
+              <Select disabled={!isEditing} value={currentDepartamento} onChange={selectDepartamento} title='Departamento' options={departamentos}/>
             </div>
             <div className='flex items-center w-full'>
-              <Select title='Sede' disabled={!isEditing} options={['Velez', 'Puente Araujo']}/>
+              <Select disabled={!isEditing} value={currentSede?.nombre} onChange={selectSede} title='Sede' options={sedes.map(sede => sede.nombre)} />
             </div>
+          </div>
+          
+          <div className='flex gap-4'>
+            <Select disabled={!isEditing} value={currentTipoFormacion} onChange={selectTipoFormacion} width='w-full' title='Tipo' options={['Tegnologo', 'Tecnico']}/>
           </div>
 
           <div className='flex gap-4'>
             <div className='flex flex-col w-full'>
-              <p>Tipo</p>
-              <Input disabled={!isEditing} value='Tegnologo ' type='text'/>
+              <p>Nombre De Formación</p>
+              <Input disabled={!isEditing} value={inputNombreFormacionValue} setValue={setInputNombreFormacionValue} type='text'/>
             </div>
             <div className='flex flex-col w-full'>
               <p>N. Ficha</p>
-              <Input disabled={!isEditing} type='text'/>
+              <Input value={formacion.numeroIdentificacion.toString()} disabled={true} type='text'/>
             </div>
           </div>
 
           <div className='flex flex-col w-full'>
             <p>Instructores</p>
-            <Input disabled={!isEditing} type='text'/>
+            <Input disabled={!isEditing} value={inputInstructoresValue} setValue={setInputInstructoresValue} type='text'/>
           </div>
           <div className='flex flex-col w-full'>
             <p>Horario</p>
-            <Input value='Lunes - Viernes 12:00 - 18:00' disabled={!isEditing} type='text'/>
+            <Input disabled={!isEditing} value={inputHorarioValue} setValue={setInputHorarioValue} type='text'/>
           </div>
           <div className='flex flex-col w-full'>
             <p>Fecha de Inicio del programa</p>
-            <Input disabled={!isEditing} value='11-04-2025' type='date'/>
+            <Input disabled={!isEditing} value={inputFechaInicioValue} setValue={setInputFechaInicioValue} type='date'/>
           </div>
           <div className='flex flex-col w-full'>
             <p>Fecha de Fin del programa</p>
-            <Input disabled={!isEditing} value='2005-04-12' type='date'/>
+            <Input disabled={!isEditing} value={inputFechaFinValue} setValue={setInputFechaFinValue} type='date'/>
           </div>
         </Form>
       </ContentLayout>

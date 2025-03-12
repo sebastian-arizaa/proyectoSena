@@ -24,6 +24,12 @@ export class ControladorFormaciones {
     res.json(data)
   }
 
+  static async traerCompleto(req, res) {
+    const {numeroIdentificacion} = req.params
+    const data = await Formaciones.traerCompleto(numeroIdentificacion)
+    res.json(data)
+  }
+
   static async eliminar (req, res) {
     const {numeroIdentificacion} = req.params
     const data = await Formaciones.eliminar(numeroIdentificacion)
