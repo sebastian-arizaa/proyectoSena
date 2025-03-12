@@ -21,7 +21,7 @@ export default function useFetchAprendiz({numeroIdentificacion}: Props) {
   return [aprendiz]
 }
 
-const aprendizBase = {
+const aprendizBase: AprendizCompleto = {
   numeroIdentificacion: '',
   nombre: '',
   apellidos: '',

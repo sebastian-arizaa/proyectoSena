@@ -5,14 +5,16 @@ import { MenuContainer } from '../componentes/MenuContainer';
 import { Form } from '../componentes/Form';
 import { useEffect, useState } from 'react';
 import { Select } from '../componentes/Select';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import useFetchAprendiz from '../hooks/useFetchAprendiz';
-import { Sede } from '../types';
+import { Aprendiz, Sede } from '../types';
 import { useFetchDepartamentos } from '../hooks/useFetchDepartamentos';
 import { useFetchSedes } from '../hooks/useFetchSedes';
 import { useFetchFormaciones } from '../hooks/useFetchFormaciones';
+import axios from 'axios';
 
 export function PerfilAprendiz() {
+  const navigate = useNavigate()
   const {numeroIdentificacion} = useParams()
   const [aprendiz] = useFetchAprendiz({numeroIdentificacion: numeroIdentificacion ?? null})
   const [isEditing, setIsEditing] = useState(false)
@@ -29,6 +31,7 @@ export function PerfilAprendiz() {
   const [currentSede, setCurrentSede] = useState<Sede | null>(null)
   const {formaciones} = useFetchFormaciones({currentSede, sedes})
   const [currentFormacion, setCurrentFormacion] = useState<string>('')
+  console.log('🚀 ~ PerfilAprendiz ~ currentFormacion:', currentFormacion)
 
   const selectDepartamento = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value
@@ -41,28 +44,49 @@ export function PerfilAprendiz() {
     if(sedeEncontrada) setCurrentSede(sedeEncontrada) 
   }
 
+  const selectFormacion = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value
+    setCurrentFormacion(value)
+  }
 
 
   const toggleEdit = (isEditing: boolean) => {
     setIsEditing(isEditing)
   }
 
-  const crear = () => {
-    console.log('Procede a guardar')
+  const edit = async() => {
+    if(!inputNombreValue) return 
+    if(!inputApellidosValue) return 
+    if(!inputNumeroIdentificacionValue) return 
+    if(!inputCelularValue) return 
+    if(!inputEmailValue) return
+    if(!currentFormacion) return
+
+    const newFormacion = formaciones.find(formacion => formacion.nombre === currentFormacion)
+    const newAprendiz: Aprendiz = {
+      nombre: inputNombreValue,
+      apellidos: inputApellidosValue,
+      numeroIdentificacion: inputNumeroIdentificacionValue,
+      celular: inputCelularValue,
+      email: inputEmailValue,
+      idFormacion: newFormacion?.numeroIdentificacion ?? null
+    }
+
+    const {status} = await axios.patch(`http://localhost:3000/aprendices/${numeroIdentificacion}`, newAprendiz)
+    if(status) {
+      navigate(`/aprendices/${aprendiz.idFormacion}`)
+    }
   }
 
-  const edit = () => {
-    console.log('Procede a Actulizar')
-    
-  }
-
-  const eliminar = () => {
-    console.log('Procede a eliminar')
+  const eliminar = async() => {
+    const {status} = await axios.delete(`http://localhost:3000/aprendices/${numeroIdentificacion}`)
+    if(status == 200) {
+      navigate(`/aprendices/${aprendiz.idFormacion}`)
+    }
   }
 
   const returnOnClicks = () => {
     return {
-      onClickCrear:  crear,     
       onClickActulizar:  edit,     
       onClickEliminar:  eliminar,     
     }
@@ -125,7 +149,7 @@ export function PerfilAprendiz() {
             </div>
           </div>
           <div className='flex items-center w-full'>
-            <Select value={currentFormacion} width='w-full' title='Formacion' disabled={!isEditing} options={formaciones.map(formacion => formacion.nombre)}/>
+            <Select value={currentFormacion} onChange={selectFormacion} width='w-full' title='Formacion' disabled={!isEditing} options={formaciones.map(formacion => formacion.nombre)}/>
           </div>  
         </Form>
       </ContentLayout>

@@ -1,4 +1,4 @@
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { Button } from '../componentes/Button';
 import { Input } from '../componentes/Input';
 import { BaseLayout } from '../componentes/layouts/BaseLayout';
@@ -9,6 +9,7 @@ import { useState } from 'react';
 import useFetchAprendices from '../hooks/useFetchAprendices';
 
 export function Aprendices() {
+  const navigate = useNavigate()
   const {idFormacion} = useParams()
   const {aprendices, aprendicesFiltrados, setAprendicesFiltrados} = useFetchAprendices({idFormacion: Number(idFormacion)})
   const [inputNombreValue, setInputNombreValue] = useState('')
@@ -30,6 +31,9 @@ export function Aprendices() {
                 <Input setValue={setInputNombreValue}  type='text'/>
               </div>
               <Button onClick={filtrarAprendices} type='primary'>Buscar</Button>
+            </div>
+            <div className='flex items-center h-full'>
+             <Button onClick={() => navigate('/crearaprendiz')} type='primary'>Crear</Button>
             </div>
           </div>
           <Table type='aprendices' itemsProps={aprendicesFiltrados}/>
