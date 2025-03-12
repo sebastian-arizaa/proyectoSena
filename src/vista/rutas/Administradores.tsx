@@ -1,4 +1,4 @@
-import {/*  useEffect,  */useState } from 'react';
+import {useState } from 'react';
 import { Button } from '../componentes/Button';
 import { Input } from '../componentes/Input';
 import { BaseLayout } from '../componentes/layouts/BaseLayout';
@@ -6,11 +6,13 @@ import { ContentLayout } from '../componentes/layouts/ContentLayout';
 import { MenuContainer } from '../componentes/MenuContainer';
 import { Select } from '../componentes/Select';
 import Table from '../componentes/Table';
+import { useNavigate } from 'react-router';
 import useFetchAdministradores from '../hooks/useFetchAdministradores';
 import { Tipo } from '../types';
 
 
 export function Administradores() {
+  const navigate = useNavigate()
   const [tipo, setTipo] = useState<Tipo>('')
   const {administradores, administradoresFiltrados, setAdministradoresFiltrados} = useFetchAdministradores({tipo})
   const [inputAdministradorValue, setInputFormacionValue] = useState('')
@@ -44,6 +46,9 @@ export function Administradores() {
                 <Input setValue={setInputFormacionValue} type='text'/>
               </div>
               <Button onClick={filtrarAdministradoresPorNombre} type='primary'>Buscar</Button>
+            </div>
+            <div className='flex items-center h-full'>
+             <Button onClick={() => navigate('/crearadministrador')} type='primary'>Crear</Button>
             </div>
           </div>
           <Table type={returnTipo()} itemsProps={administradoresFiltrados}/>

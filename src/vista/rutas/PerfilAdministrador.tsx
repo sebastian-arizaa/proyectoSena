@@ -5,17 +5,18 @@ import { ContentLayout } from '../componentes/layouts/ContentLayout';
 import { MenuContainer } from '../componentes/MenuContainer';
 import { Form } from '../componentes/Form';
 import { Select } from '../componentes/Select';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import useFetchAdministrador from '../hooks/useFetchAdministrador';
 import { useFetchDepartamentos } from '../hooks/useFetchDepartamentos';
-import { AdminDepartamento, AdminSedeCompleto, Sede, Tipo } from '../types';
+import { AdminDepartamento, AdminSede, AdminSedeCompleto, Sede, Tipo } from '../types';
 import { useFetchSedes } from '../hooks/useFetchSedes';
+import axios from 'axios';
 
 export function PerfilAdministrador() {
+  const navigate = useNavigate()
+
   const {numeroIdentificacion, tipo} = useParams<{numeroIdentificacion: string, tipo: Tipo}>()
   const [administrador] = useFetchAdministrador({numeroIdentificacion, tipo})
-  console.log('🚀 ~ PerfilAdministrador ~ administrador:', administrador)
-
 
   const [inputNombreValue, setInputNombreValue] = useState('')
   const [inputApellidosValue, setInputApellidosValue] = useState('')
@@ -27,28 +28,7 @@ export function PerfilAdministrador() {
   const {sedes, setSedes} = useFetchSedes({currentDepartamento, tipo})
   const [currentSede, setCurrentSede] = useState<Sede | null>(null)
 
-
-
-  useEffect(()=> {
-    setInputNombreValue(administrador?.nombre)
-    setInputApellidosValue(administrador?.apellidos)
-    setInputNumeroIdentificacionValue(administrador?.numeroIdentificacion)
-    setInputPasswordValue(administrador?.password)
-    if(tipo == 'Departamento') {
-      setCurrentDepartamento((administrador as AdminDepartamento)?.nombreDepartamento)
-    }else if(tipo == 'Sede') {
-      setCurrentDepartamento((administrador as AdminSedeCompleto).nombreDepartamento)
-    }
-    
-  }, [administrador])
-
-  useEffect(()=> {
-    if(tipo == 'Sede') {
-      const sedeEncontrada = sedes.find(sede => sede.nombre == (administrador as AdminSedeCompleto).nombreSede)
-      if(sedeEncontrada) setCurrentSede(sedeEncontrada)
-    }
-  }, [sedes])
-
+  const [isEditing, setIsEditing] = useState(false)
 
   const selectDepartamento = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value
@@ -62,29 +42,63 @@ export function PerfilAdministrador() {
     if(sedeEncontrada) setCurrentSede(sedeEncontrada) 
   }
 
-
-  const [isEditing, setIsEditing] = useState(false)
-
   const toggleEdit = (isEditing: boolean) => {
     setIsEditing(isEditing)
   }
 
-  const crear = () => {
-    console.log('Procede a guardar')
+  const edit = async() => {
+    if(!inputNombreValue) return
+    if(!inputApellidosValue) return
+    if(!inputNumeroIdentificacionValue) return
+    if(!inputPasswordValue) return
+    if(!currentDepartamento) return
+
+    if(tipo == 'Departamento') {
+      const adminDepartamento: AdminDepartamento = {
+        nombre: inputNombreValue,
+        apellidos: inputApellidosValue,
+        numeroIdentificacion: inputNumeroIdentificacionValue,
+        password: inputPasswordValue,
+        nombreDepartamento: currentDepartamento
+      }
+      const {status} = await axios.patch(`http://localhost:3000/admindepartamento/${numeroIdentificacion}`, adminDepartamento)
+      if(status == 200) {
+        setIsEditing(false)
+      }
+    }else if(tipo == 'Sede') {
+      const adminSede: AdminSede = {
+        nombre: inputNombreValue,
+        apellidos: inputApellidosValue,
+        numeroIdentificacion: inputNumeroIdentificacionValue,
+        password: inputPasswordValue,
+        idSede_as: currentSede?.numeroIdentificacion.toString()
+      }
+      const {status} = await axios.patch(`http://localhost:3000/adminsede/${numeroIdentificacion}`, adminSede)
+      if(status == 200) {
+        setIsEditing(false)
+      } 
+    }
+
   }
 
-  const edit = () => {
-    console.log('Procede a Actulizar')
-    
-  }
-
-  const eliminar = () => {
-    console.log('Procede a eliminar')
+  const eliminar = async() => {
+    if(tipo == 'Departamento') {
+      const {status} = await axios.delete(`http://localhost:3000/admindepartamento/${numeroIdentificacion}`)
+      if(status == 200) {
+        navigate('/administradores')
+        console.log('Procede a eliminar')
+      }
+    }else if(tipo == 'Sede') {
+      const {status} = await axios.delete(`http://localhost:3000/adminsede/${numeroIdentificacion}`)
+      if(status == 200) {
+        navigate('/administradores')
+        console.log('Procede a eliminar')
+      }
+    }
   }
 
   const returnOnClicks = () => {
     return {
-      onClickCrear: crear,     
       onClickActulizar: edit,     
       onClickEliminar: eliminar,     
     }
@@ -109,6 +123,27 @@ export function PerfilAdministrador() {
     return <></>
   }
 
+  useEffect(()=> {
+    setInputNombreValue(administrador?.nombre)
+    setInputApellidosValue(administrador?.apellidos)
+    setInputNumeroIdentificacionValue(administrador?.numeroIdentificacion)
+    setInputPasswordValue(administrador?.password)
+    if(tipo == 'Departamento') {
+      setCurrentDepartamento((administrador as AdminDepartamento)?.nombreDepartamento)
+    }else if(tipo == 'Sede') {
+      setCurrentDepartamento((administrador as AdminSedeCompleto).nombreDepartamento)
+    }
+    
+  }, [administrador])
+
+  useEffect(()=> {
+    if(tipo == 'Sede') {
+      const sedeEncontrada = sedes.find(sede => sede.nombre == (administrador as AdminSedeCompleto).nombreSede)
+      if(sedeEncontrada) setCurrentSede(sedeEncontrada)
+    }
+  }, [sedes])
+
+
   return (
     <BaseLayout>
       <ContentLayout>
@@ -132,8 +167,6 @@ export function PerfilAdministrador() {
             <p>Contraseña</p>
             <Input disabled={!isEditing} value={inputPasswordValue} setValue={setInputPasswordValue} type='password'/>
           </div>
-         
-
           {renderPorTipo()}
         </Form>
       </ContentLayout>
