@@ -103,7 +103,7 @@ export function CrearFormacion() {
           </div>
           
           <div className='flex gap-4'>
-            <Select onChange={selectTipoFormacion} width='w-full' title='Tipo' options={['Tegnologo', 'Tecnico']}/>
+            <Select onChange={selectTipoFormacion} width='w-full' title='Tipo' options={['Tecnólogo', 'Técnico']}/>
           </div>
 
 
