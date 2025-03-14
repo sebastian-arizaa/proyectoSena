@@ -5,11 +5,14 @@ import { BaseLayout } from '../componentes/layouts/BaseLayout';
 import { ContentLayout } from '../componentes/layouts/ContentLayout';
 import { MenuContainer } from '../componentes/MenuContainer';
 import Table from '../componentes/Table';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useFetchAprendices from '../hooks/useFetchAprendices';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 
 export function Aprendices() {
   const navigate = useNavigate()
+  const {localStorageData} = useLocalStorage()
+  
   const {idFormacion} = useParams()
   const {aprendices, aprendicesFiltrados, setAprendicesFiltrados} = useFetchAprendices({idFormacion: Number(idFormacion)})
   const [inputNombreValue, setInputNombreValue] = useState('')
@@ -18,6 +21,10 @@ export function Aprendices() {
     const filtrados = aprendices.filter(aprendiz => aprendiz.nombre.toLowerCase().includes(inputNombreValue.toLowerCase()))
     setAprendicesFiltrados(filtrados)
   }
+
+  useEffect(()=> {
+    if(!localStorageData.isLogged) navigate('/ingresar')
+  }, [])
 
   return (
     <BaseLayout>

@@ -1,4 +1,4 @@
-import {useState } from 'react';
+import {useEffect, useState } from 'react';
 import { Button } from '../componentes/Button';
 import { Input } from '../componentes/Input';
 import { BaseLayout } from '../componentes/layouts/BaseLayout';
@@ -9,10 +9,12 @@ import Table from '../componentes/Table';
 import { useNavigate } from 'react-router';
 import useFetchAdministradores from '../hooks/useFetchAdministradores';
 import { Tipo } from '../types';
-
+import { useLocalStorage } from '../hooks/useLocalStorage';
 
 export function Administradores() {
   const navigate = useNavigate()
+  const {localStorageData} = useLocalStorage()
+  
   const [tipo, setTipo] = useState<Tipo>('')
   const {administradores, administradoresFiltrados, setAdministradoresFiltrados} = useFetchAdministradores({tipo})
   const [inputAdministradorValue, setInputFormacionValue] = useState('')
@@ -32,6 +34,10 @@ export function Administradores() {
     const data = administradores.filter(admin => admin.nombre.toLowerCase().includes(inputAdministradorValue.toLowerCase()))
     setAdministradoresFiltrados(data)
   }
+  
+  useEffect(()=> {
+    if(!localStorageData.isLogged) navigate('/ingresar')
+  }, [])
   
   return (
     <BaseLayout>

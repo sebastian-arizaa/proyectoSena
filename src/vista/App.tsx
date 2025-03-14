@@ -1,5 +1,5 @@
 import { HashRouter, Route, Routes } from 'react-router'
-import { Home } from './rutas/Home'
+// import { Home } from './rutas/Home'
 import { Ingresar } from './rutas/Ingresar'
 import { Datos } from './rutas/Formaciones'
 import { Perfil } from './rutas/Perfil'
@@ -12,14 +12,14 @@ import { Aprendices } from './rutas/Aprendices'
 import { CrearAdministrador } from './rutas/CrearAdministrador'
 import { CrearAprendiz } from './rutas/CrearAprendiz'
 import { CrearFormacion } from './rutas/CrearFormacion'
+import { getLocalStorege } from './utils/localstorage'
 
 function App() {
-  console.log('charge')
   return (
     <>
       <HashRouter>
         <Routes>
-          <Route path='/' element={<Home/>}/>
+          {/* <Route path='/' element={<Home/>}/> */}
           <Route path='/ingresar' element={<Ingresar/>}/>
           <Route path='/perfil' element={<Perfil/>}/>
           <Route path='/perfiladministrador/:tipo/:numeroIdentificacion' element={<PerfilAdministrador/>}/>
@@ -32,6 +32,7 @@ function App() {
           <Route path='/aprendices/:idFormacion' element={<Aprendices/>}/>
           <Route path='/administradores' element={<Administradores/>}/>
           <Route path='/cerrarsesion' element={<CerraSesion/>}/>
+          <Route path="*" element={<p>Pagina no encontrada</p>}/>
         </Routes>
       </HashRouter>
     </>

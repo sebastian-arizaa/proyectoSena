@@ -11,9 +11,11 @@ import { useFetchDepartamentos } from '../hooks/useFetchDepartamentos';
 import { Formacion, Sede } from '../types';
 import { useFetchSedes } from '../hooks/useFetchSedes';
 import axios from 'axios';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 
 export function PerfilFormacion() {
   const navigate = useNavigate()   
+  const {localStorageData} = useLocalStorage()
 
   const {numeroIdentificacion} = useParams()
   const [formacion] = useFetchFormacion({numeroIdentificacion})
@@ -68,8 +70,6 @@ export function PerfilFormacion() {
     setCurrentTipoFormacion(value)
   }
 
-
-
   const toggleEdit = (isEditing: boolean) => {
     setIsEditing(isEditing)
   }
@@ -119,6 +119,10 @@ export function PerfilFormacion() {
       onClickEliminar: eliminar,     
     }
   }
+
+  useEffect(()=> {
+    if(!localStorageData.isLogged) navigate('/ingresar')
+  }, [])
 
   return (
     <BaseLayout>

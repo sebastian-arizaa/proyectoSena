@@ -12,9 +12,12 @@ import { useFetchDepartamentos } from '../hooks/useFetchDepartamentos';
 import { useFetchSedes } from '../hooks/useFetchSedes';
 import { useFetchFormaciones } from '../hooks/useFetchFormaciones';
 import axios from 'axios';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 
 export function PerfilAprendiz() {
   const navigate = useNavigate()
+  const {localStorageData} = useLocalStorage()
+  
   const {numeroIdentificacion} = useParams()
   const [aprendiz] = useFetchAprendiz({numeroIdentificacion: numeroIdentificacion ?? null})
   const [isEditing, setIsEditing] = useState(false)
@@ -110,6 +113,10 @@ export function PerfilAprendiz() {
   useEffect(()=> {
     setCurrentFormacion(aprendiz.nombreFormacion)
   }, [currentSede])
+
+  useEffect(()=> {
+    if(!localStorageData.isLogged) navigate('/ingresar')
+  }, [])
 
   return (
     <BaseLayout>

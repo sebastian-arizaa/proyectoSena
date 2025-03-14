@@ -11,9 +11,11 @@ import { useFetchDepartamentos } from '../hooks/useFetchDepartamentos';
 import { AdminDepartamento, AdminSede, AdminSedeCompleto, Sede, Tipo } from '../types';
 import { useFetchSedes } from '../hooks/useFetchSedes';
 import axios from 'axios';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 
 export function PerfilAdministrador() {
   const navigate = useNavigate()
+  const {localStorageData} = useLocalStorage()
 
   const {numeroIdentificacion, tipo} = useParams<{numeroIdentificacion: string, tipo: Tipo}>()
   const [administrador] = useFetchAdministrador({numeroIdentificacion, tipo})
@@ -143,6 +145,9 @@ export function PerfilAdministrador() {
     }
   }, [sedes])
 
+  useEffect(()=> {
+    if(!localStorageData.isLogged) navigate('/ingresar')
+  }, [])
 
   return (
     <BaseLayout>

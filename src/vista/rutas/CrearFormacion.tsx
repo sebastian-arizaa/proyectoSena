@@ -3,17 +3,19 @@ import { BaseLayout } from '../componentes/layouts/BaseLayout';
 import { ContentLayout } from '../componentes/layouts/ContentLayout';
 import { MenuContainer } from '../componentes/MenuContainer';
 import { Form } from '../componentes/Form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Select } from '../componentes/Select';
 import { Formacion, Sede } from '../types';
 import { useFetchDepartamentos } from '../hooks/useFetchDepartamentos';
 import { useFetchSedes } from '../hooks/useFetchSedes';
 import axios from 'axios';
-
-// type TipoFormacion = 'Tegnologo' | 'Tecnico' | ''
-// type Date = `${string}-${string}-${string}`
+import { useNavigate } from 'react-router';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 
 export function CrearFormacion() {
+  const navigate = useNavigate()
+  const {localStorageData} = useLocalStorage()
+
   const [inputNombreFormacionValue, setInputNombreFormacionValue] = useState('')
   const [inputInstructoresValue, setInputInstructoresValue] = useState('')
   const [inputHorarioValue, setInputHorarioValue] = useState('')
@@ -79,14 +81,15 @@ export function CrearFormacion() {
     }
   }
 
-
   const returnOnClicks = () => {
     return {
       onClickCrear:  crear,     
     }
   }
 
- 
+  useEffect(()=> {
+    if(!localStorageData.isLogged) navigate('/ingresar')
+  }, []) 
 
   return (
     <BaseLayout>

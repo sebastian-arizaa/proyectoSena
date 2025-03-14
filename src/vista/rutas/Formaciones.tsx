@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '../componentes/Button';
 import { Input } from '../componentes/Input';
 import { BaseLayout } from '../componentes/layouts/BaseLayout';
@@ -11,10 +11,13 @@ import { useFetchDepartamentos } from '../hooks/useFetchDepartamentos';
 import { useFetchSedes } from '../hooks/useFetchSedes';
 import { useFetchFormaciones } from '../hooks/useFetchFormaciones';
 import { useNavigate } from 'react-router';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 
 
 export function Datos() {
   const navigate = useNavigate()
+  const {localStorageData} = useLocalStorage()
+
   const [departamentos] = useFetchDepartamentos()
   const [currentDepartamento, setCurrentDepartamento] = useState<string>('')
   const {sedes} = useFetchSedes({currentDepartamento})
@@ -42,6 +45,10 @@ export function Datos() {
     const filtradas = formaciones.filter(formacion => formacion.nombre.toLocaleLowerCase().includes(inputFormacionValue.toLocaleLowerCase()))
     setFormacionesFiltradas(filtradas)
   }
+
+  useEffect(()=> {
+    if(!localStorageData.isLogged) navigate('/ingresar')
+  }, [])
 
   return (
     <BaseLayout>

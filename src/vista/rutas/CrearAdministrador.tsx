@@ -3,16 +3,21 @@ import { BaseLayout } from '../componentes/layouts/BaseLayout';
 import { ContentLayout } from '../componentes/layouts/ContentLayout';
 import { MenuContainer } from '../componentes/MenuContainer';
 import { Form } from '../componentes/Form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Select } from '../componentes/Select';
 import { Sede, Tipo } from '../types';
 import { useFetchDepartamentos } from '../hooks/useFetchDepartamentos';
 import { useFetchSedes } from '../hooks/useFetchSedes';
 import { AdminDepartamento, AdminSede } from '../types';
 import axios from 'axios';
+import { useNavigate } from 'react-router';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 
 
 export function CrearAdministrador() {
+  const navigate = useNavigate()
+  const {localStorageData} = useLocalStorage()
+
   const [inputNombreValue, setInputNombreValue] = useState('')
   const [inputApellidosValue, setInputApellidosValue] = useState('')
   const [inputNumeroIdentificacionValue, setInputNumeroIdentificacionValue] = useState('')
@@ -121,6 +126,10 @@ export function CrearAdministrador() {
     )
     return <></>
   }
+
+  useEffect(()=> {
+    if(!localStorageData.isLogged) navigate('/ingresar')
+  }, [])
 
   return (
     <BaseLayout>

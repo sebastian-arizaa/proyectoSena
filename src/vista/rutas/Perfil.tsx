@@ -4,9 +4,14 @@ import { ContentLayout } from '../componentes/layouts/ContentLayout';
 import { MenuContainer } from '../componentes/MenuContainer';
 import { Form } from '../componentes/Form';
 import { Select } from '../componentes/Select';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 
 export function Perfil() {
+  const navigate = useNavigate()
+  const {localStorageData} = useLocalStorage()
+
   const [isEditing, setIsEditing] = useState(false)
     
   const toggleEdit = (isEditing: boolean) => {
@@ -18,6 +23,10 @@ export function Perfil() {
 
     }
   }
+
+  useEffect(()=> {
+    if(!localStorageData.isLogged) navigate('/ingresar')
+  }, [])
 
   return (
     <BaseLayout>

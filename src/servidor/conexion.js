@@ -8,6 +8,9 @@ export const connection = mysql2.createConnection({
   password: "123"
 })
 connection.connect((err) => {
-  if(err) console.log("Error: ", err)
+  if(err) {
+    console.log("Error: ", err)
+    return
+  }  
   console.log("Connection done")
 })
