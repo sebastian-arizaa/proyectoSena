@@ -27,18 +27,14 @@ export function PerfilFormacion() {
   const [inputFechaFinValue, setInputFechaFinValue] = useState('')
   const [departamentos] = useFetchDepartamentos()
   const [currentDepartamento, setCurrentDepartamento] = useState<string>('')
-  console.log('🚀 ~ PerfilFormacion ~ currentDepartamento:', currentDepartamento)
   const {municipios, setMunicipio} = useFetchMunicipio({currentDepartamento})
   const [currentMunicipio, setCurrentMunicipio] = useState<string>('')
   const [currentTipoFormacion, setCurrentTipoFormacion] = useState<string>('')
 
   const [isEditing, setIsEditing] = useState(false)
-  console.log(isEditing)
 
-  console.log('🚀 ~ PerfilFormacion ~ formacion:', formacion)
   useEffect(()=> {
 
-    console.log('from use EFEcccc,', formacion)
     setInputNombreFormacionValue(formacion?.nombre)
     setInputInstructoresValue(formacion?.instructores)
     setInputHorarioValue(formacion?.horario)
@@ -49,10 +45,6 @@ export function PerfilFormacion() {
     setCurrentMunicipio(formacion?.nombreMunicipio)
   }, [formacion])
 
-  // useEffect(()=> {
-  //   const sedeEncontrada = sedes.find(sede => sede.nombre == formacion.nombreSede)
-  //   if(sedeEncontrada) setCurrentMunicipio(sedeEncontrada)
-  // }, [sedes])
 
   const selectDepartamento = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value
@@ -99,10 +91,6 @@ export function PerfilFormacion() {
     const {status} = await axios.patch(`http://localhost:3000/formaciones/${numeroIdentificacion}`, newFormacion)
     if(status == 200) {
       navigate('/formaciones')
-      console.log('Actualizoo')
-      console.log('=========================')
-      console.log(newFormacion)
-
     }
   }
 
@@ -110,7 +98,6 @@ export function PerfilFormacion() {
     const {status} = await axios.delete(`http://localhost:3000/formaciones/${numeroIdentificacion}`)
     if(status == 200) {
       navigate('/formaciones')
-      console.log('Se eliminio')
     }
   }
 
@@ -140,7 +127,7 @@ export function PerfilFormacion() {
           </div>
           
           <div className='flex gap-4'>
-            <Select disabled={!isEditing} value={currentTipoFormacion} onChange={selectTipoFormacion} width='w-full' title='Tipo' options={['Tegnologo', 'Tecnico']}/>
+            <Select disabled={!isEditing} value={currentTipoFormacion} onChange={selectTipoFormacion} width='w-full' title='Tipo' options={['Tecnólogo', 'Técnico']}/>
           </div>
 
           <div className='flex gap-4'>

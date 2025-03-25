@@ -28,7 +28,6 @@ export function ItemAprendiz({Icon, itemData}: Props) {
         <p className='flex items-center'>{itemData.nombre}</p>
       </div>
       <div className="flex items-center gap-4">
-        <span className='flex items-center py-1 px-2 bg-red-200 rounded'>Finalizado</span>
         <p>{formacion?.nombre}</p>
       </div>
     </div>

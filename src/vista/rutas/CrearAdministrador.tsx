@@ -5,14 +5,13 @@ import { MenuContainer } from '../componentes/MenuContainer';
 import { Form } from '../componentes/Form';
 import { useEffect, useState } from 'react';
 import { Select } from '../componentes/Select';
-import { Sede, Tipo } from '../types';
+import { Tipo } from '../types';
 import { useFetchDepartamentos } from '../hooks/useFetchDepartamentos';
 import { useFetchMunicipio } from '../hooks/useFetchMunicipio';
 import { AdminDepartamento, AdminSede } from '../types';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
 import { useLocalStorage } from '../hooks/useLocalStorage';
-
 
 export function CrearAdministrador() {
   const navigate = useNavigate()
@@ -32,7 +31,7 @@ export function CrearAdministrador() {
 
   const selectTipo = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value
-    if(value == 'Departamento' || value == 'Sede' || value == '') {
+    if(value == 'Departamento' || value == 'Sede' || value == 'Municipio' || value == '') {
       setTipo(value)
       setCurrentDepartamento('')
     }
@@ -47,9 +46,6 @@ export function CrearAdministrador() {
   const selectSede = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value
     setCurrentMunicipio(value)
-    // if(value == '') setCurrentMunicipio(null)
-    // const sedeEncontrada = sedes.find(sede => sede.nombre == value)
-    // if(sedeEncontrada) setCurrentMunicipio(sedeEncontrada) 
   }
 
   const limpiarFormulario = () => {
@@ -82,7 +78,7 @@ export function CrearAdministrador() {
       }
     }
     
-    if(tipo == 'Sede') {
+    if(tipo == 'Sede' || tipo == 'Municipio') {
       if(!inputNombreValue) return 
       if(!inputApellidosValue) return
       if(!inputNumeroIdentificacionValue) return
@@ -93,7 +89,8 @@ export function CrearAdministrador() {
         apellidos: inputApellidosValue,
         numeroIdentificacion: inputNumeroIdentificacionValue,
         password: inputPasswordValue,
-        // idSede_as: currentMunicipio.numeroIdentificacion.toString()
+        nombreDepartamento: currentDepartamento,
+        nombreMunicipio: currentMunicipio
       }
       const {status} = await axios.post('http://localhost:3000/adminsede', administrador)
       if(status == 200) {
@@ -115,7 +112,7 @@ export function CrearAdministrador() {
         <Select onChange={selectDepartamento} title='Departamento' options={departamentos}/>
       </div>
     )
-    if(tipo == 'Sede') return (
+    if(tipo == 'Sede' || tipo == 'Municipio') return (
       <div className='flex gap-4'>
         <div className='flex items-center w-full'>
           <Select onChange={selectDepartamento} title='Departamento' options={departamentos}/>
@@ -156,7 +153,7 @@ export function CrearAdministrador() {
             <Input value={inputPasswordValue} setValue={setInputPasswordValue} type='password'/>
           </div>
           <div>
-            <Select width='w-full' value={tipo} onChange={selectTipo} title='Tipo' options={['Departamento', 'Sede']}/>
+            <Select width='w-full' value={tipo} onChange={selectTipo} title='Tipo' options={['Departamento', 'Municipio']}/>
           </div>
           {renderPorTipo()}
         </Form>

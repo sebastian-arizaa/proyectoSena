@@ -21,13 +21,13 @@ export function Administradores() {
 
   const returnTipo = () => {
     if(tipo == 'Departamento') return 'adminDepartamento'
-    if(tipo == 'Sede') return 'adminSede'
+    if(tipo == 'Sede' || tipo == 'Municipio') return 'adminSede'
     return ''
   }
 
   const selectTipo = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value
-    if(value == 'Departamento' || value == 'Sede' || value == '') setTipo(value)
+    if(value == 'Departamento' || value == 'Sede' || value == 'Municipio' || value == '') setTipo(value)
   }
 
   const filtrarAdministradoresPorNombre = async() => {
@@ -45,7 +45,7 @@ export function Administradores() {
         <MenuContainer/>
         <div className='flex flex-col w-full h-full'>
           <div className='flex items-end gap-4 py-4'>
-            <Select onChange={selectTipo} title='Tipo' options={['Departamento', 'Sede']}/>
+            <Select onChange={selectTipo} title='Tipo' options={['Departamento', 'Municipio']}/>
             <div className='flex items-center gap-2 w-2/6 max-w-[500px] h-14'>
               <p className='flex items-center w-min'>Nombre:</p>
               <div className='w-full'>

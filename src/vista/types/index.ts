@@ -69,4 +69,4 @@ export type AprendizCompleto = Aprendiz & {
 //   nombreSede: string
 // }
 
-export type Tipo = 'Departamento' | 'Sede' | ''
+export type Tipo = 'Departamento' | 'Sede' | 'Municipio' | ''

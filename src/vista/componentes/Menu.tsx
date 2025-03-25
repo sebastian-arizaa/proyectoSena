@@ -8,10 +8,10 @@ export function Menu() {
 
   return (
     <div className=' flex flex-col gap-4 w-[90%]  h-full px-4 py-2  bg-primary '>
-      <Button onClick={() => navigate('/perfil')} type='third'>Perfil</Button>
+      <Button disabled={true} onClick={() => navigate('/perfil')} type='third'>Perfil</Button>
       <Button onClick={() => navigate('/administradores')} type='third'>Administradores</Button>
       <Button onClick={() => navigate('/formaciones')} type='third'>Formaciones</Button>
-      <Button onClick={() => {navigate('/ingresar'); saveItemData('proyectoSena', {isLogged: false})}} type='third'>Cerrar sesion</Button>
+      <Button disabled={true} onClick={() => {navigate('/ingresar'); saveItemData('proyectoSena', {isLogged: false})}} type='third'>Cerrar sesion</Button>
     </div>
   )
 }

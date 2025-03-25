@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { ItemFormacion } from './ItemFormacion'
-import { Pagination } from './Pagination'
+// import { Pagination } from './Pagination'
 import { AdminDepartamento, AdminSede, Aprendiz, Formacion} from '../types';
 import { ItemAdminDepartamento } from './ItemAdminDepartamento';
 import { ItemAdminSede } from './ItemAdminSede';
@@ -34,7 +34,7 @@ export default function Table({type, itemsProps}: Props) {
   return (
     <div className='flex flex-col gap-4 w-full h-full  py-4 border-t-4 border-t-primary '>
       {renderItems()}
-      <Pagination/>
+      {/* <Pagination/> */}
     </div>
   )
 }

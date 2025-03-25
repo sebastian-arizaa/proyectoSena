@@ -5,7 +5,7 @@ import { MenuContainer } from '../componentes/MenuContainer';
 import { Form } from '../componentes/Form';
 import { useEffect, useState } from 'react';
 import { Select } from '../componentes/Select';
-import { Aprendiz, Sede } from '../types';
+import { Aprendiz} from '../types';
 import { useFetchDepartamentos } from '../hooks/useFetchDepartamentos';
 import { useFetchMunicipio } from '../hooks/useFetchMunicipio';
 import { useFetchFormaciones } from '../hooks/useFetchFormaciones';
@@ -58,7 +58,7 @@ export function CrearAprendiz() {
     setInputCelularValue('')
     setInputEmailValue('')
     setCurrentDepartamento('')
-    setCurrentMunicipio(null)
+    setCurrentMunicipio('')
     setMunicipio([])
     setCurrentFormacion('')
   }
@@ -103,24 +103,24 @@ export function CrearAprendiz() {
           <div className='flex gap-4'>
             <div className='flex flex-col w-full'>
               <p>Nombre</p>
-              <Input setValue={setInputNombreValue} value={inputNombreValue} type='text'/>
+              <Input setValue={setInputNombreValue} value={inputNombreValue} type='text' placeholder='Sebastian'/>
             </div>
             <div className='flex flex-col w-full'>
               <p>Apellidos</p>
-              <Input setValue={setInputApellidosValue} value={inputApellidosValue} type='text'/>
+              <Input setValue={setInputApellidosValue} value={inputApellidosValue} type='text' placeholder='Ariza Diaz'/>
             </div>
           </div>
           <div className='flex flex-col w-full'>
             <p>N. Identificacion</p>
-            <Input setValue={setInputNumeroIdentificacionValue} value={inputNumeroIdentificacionValue} type='text'/>
+            <Input setValue={setInputNumeroIdentificacionValue} value={inputNumeroIdentificacionValue} type='text' placeholder='123456789'/>
           </div>
           <div className='flex flex-col w-full'>
             <p>Celular</p>
-            <Input setValue={setInputCelularValue} value={inputCelularValue ?? ''} type='text'/>
+            <Input setValue={setInputCelularValue} value={inputCelularValue ?? ''} type='text' placeholder='3109999999'/>
           </div>
           <div className='flex flex-col w-full'>
             <p>Email</p>
-            <Input setValue={setInputEmailValue} value={inputEmailValue ?? ''} type='text'/>
+            <Input setValue={setInputEmailValue} value={inputEmailValue ?? ''} type='text' placeholder='example@gmail.com'/>
           </div>
 
 

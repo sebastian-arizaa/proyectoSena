@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { Select } from '../componentes/Select';
 import { useNavigate, useParams } from 'react-router';
 import useFetchAprendiz from '../hooks/useFetchAprendiz';
-import { Aprendiz, Sede } from '../types';
+import { Aprendiz } from '../types';
 import { useFetchDepartamentos } from '../hooks/useFetchDepartamentos';
 import { useFetchMunicipio } from '../hooks/useFetchMunicipio';
 import { useFetchFormaciones } from '../hooks/useFetchFormaciones';
@@ -30,9 +30,8 @@ export function PerfilAprendiz() {
 
   const [departamentos] = useFetchDepartamentos()
   const [currentDepartamento, setCurrentDepartamento] = useState<string>('')
-  const {municipios, setMunicipio} = useFetchMunicipio({currentDepartamento})
+  const {municipios} = useFetchMunicipio({currentDepartamento})
   const [currentMunicipio, setCurrentMunicipio] = useState<string>('')
-  console.log('🚀 ~ PerfilAprendiz ~ currentMunicipio:', currentMunicipio)
   const {formaciones} = useFetchFormaciones({currentMunicipio, municipios})
   const [currentFormacion, setCurrentFormacion] = useState<string>('')
 

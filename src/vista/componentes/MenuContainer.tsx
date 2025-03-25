@@ -3,10 +3,7 @@ import { Menu } from './Menu';
 import MenuButton from './MenuButton';
 
 export function MenuContainer() {
-  // console.log('Renderiza MenuContainer')
-
   const [isMenuActive, setIsMenuActive] = useState(false)
-  
   return (
     <>
     <div className={`absolute left-0 top-0 w-full h-full ${isMenuActive ? 'visible bg-secondary/40' : 'invisible'}`}>

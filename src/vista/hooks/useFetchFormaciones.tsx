@@ -1,26 +1,26 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import { Formacion, Sede } from '../types'
+import { Formacion} from '../types'
 
 interface Props {
-  currentSede: Sede  | null
-  sedes: Sede[]
+  currentMunicipio: string
+  municipios: string[]
 }
 
-export function useFetchFormaciones({currentSede, municipios}: Props) {
+export function useFetchFormaciones({currentMunicipio, municipios}: Props) {
   const [formaciones, setFormaciones] = useState<Formacion[]>([])
   const [formacionesFiltradas, setFormacionesFiltradas] = useState<Formacion[]>([])
 
   useEffect(()=> {
-    if(currentSede) {
+    if(currentMunicipio) {
       const getFormaciones = async() => {
-        const {data} = await axios(`http://localhost:3000/formaciones/por-municipio/${currentSede.numeroIdentificacion}`)
+        const {data} = await axios(`http://localhost:3000/formaciones/por-municipio/${currentMunicipio}`)
         setFormaciones(data)
         setFormacionesFiltradas(data)
       }
       getFormaciones()
     }
-  }, [currentSede])
+  }, [currentMunicipio])
 
   useEffect(()=> {
     if(!municipios.length) {

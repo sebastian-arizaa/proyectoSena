@@ -29,6 +29,6 @@ const aprendizBase: AprendizCompleto = {
   email: '',
   idFormacion: '',
   nombreFormacion: '',
-  nombreSede: '',
-  nombreDepartamento: ''
+  nombreDepartamento: '',
+  nombreMunicipio: ''
 }

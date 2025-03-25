@@ -20,15 +20,12 @@ export function CrearFormacion() {
   const [inputInstructoresValue, setInputInstructoresValue] = useState('')
   const [inputHorarioValue, setInputHorarioValue] = useState('')
   const [inputFechaInicioValue, setInputFechaInicioValue] = useState('')
-  console.log('🚀 ~ CrearFormacion ~ inputFechaInicioValue:', inputFechaInicioValue)
   const [inputFechaFinValue, setInputFechaFinValue] = useState('')
   const [departamentos] = useFetchDepartamentos()
   const [currentDepartamento, setCurrentDepartamento] = useState<string>('')
   const {municipios, setMunicipio} = useFetchMunicipio({currentDepartamento})
   const [currentMunicipio, setCurrentMunicipio] = useState<string>('')
-  console.log('🚀 ~ CrearFormacion ~ currentMunicipio:', currentMunicipio)
   const [currentTipoFormacion, setCurrentTipoFormacion] = useState<string>('')
-  console.log('🚀 ~ CrearFormacion ~ currentTipoFormacion:', currentTipoFormacion)
  
   const selectDepartamento = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value
@@ -61,14 +58,12 @@ export function CrearFormacion() {
   const crear = async () => {
     if(!inputNombreFormacionValue) return 
     if(!currentTipoFormacion) return
-    console.log('eeeeee')
     if(!inputInstructoresValue) return
     if(!inputFechaInicioValue) return
     if(!inputFechaFinValue) return
     if(!inputHorarioValue) return
     if(!currentMunicipio) return
 
-    console.log('eee')
     const formacion: Formacion = {
       nombre: inputNombreFormacionValue,
       numeroIdentificacion: '',
@@ -80,7 +75,6 @@ export function CrearFormacion() {
       nombreDepartamento: currentDepartamento,
       nombreMunicipio: currentMunicipio
     }
-    console.log('🚀 ~ crear ~ formacion:', formacion)
 
     const {status} = await axios.post('http://localhost:3000/formaciones', formacion)
     if(status == 200) {
@@ -113,24 +107,23 @@ export function CrearFormacion() {
           </div>
           
           <div className='flex gap-4'>
-            <Select onChange={selectTipoFormacion} width='w-full' title='Tipo' options={['Tecnólogo', 'Técnico']}/>
+            <Select value={currentTipoFormacion} onChange={selectTipoFormacion} width='w-full' title='Tipo' options={['Tecnólogo', 'Técnico']}/>
           </div>
-
 
           <div className='flex gap-4'>
             <div className='flex flex-col w-full'>
               <p>Nombre De Formación</p>
-              <Input value={inputNombreFormacionValue} setValue={setInputNombreFormacionValue} type='text'/>
+              <Input value={inputNombreFormacionValue} setValue={setInputNombreFormacionValue} type='text' placeholder='Programación de Software'/>
             </div>
           </div>
 
           <div className='flex flex-col w-full'>
             <p>Instructores</p>
-            <Input value={inputInstructoresValue} setValue={setInputInstructoresValue} type='text'/>
+            <Input value={inputInstructoresValue} setValue={setInputInstructoresValue} type='text' placeholder='Instructor 1, Instructor2, ...'/>
           </div>
           <div className='flex flex-col w-full'>
             <p>Horario</p>
-            <Input value={inputHorarioValue} setValue={setInputHorarioValue} type='text'/>
+            <Input value={inputHorarioValue} setValue={setInputHorarioValue} type='text' placeholder='Lunes, Martes, ...'/>
           </div>
           <div className='flex flex-col w-full'>
             <p>Fecha de Inicio del programa</p>

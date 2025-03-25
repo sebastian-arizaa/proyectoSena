@@ -8,7 +8,7 @@ import { Select } from '../componentes/Select';
 import { useNavigate, useParams } from 'react-router';
 import useFetchAdministrador from '../hooks/useFetchAdministrador';
 import { useFetchDepartamentos } from '../hooks/useFetchDepartamentos';
-import { AdminDepartamento, AdminSede, AdminSedeCompleto, Sede, Tipo } from '../types';
+import { AdminDepartamento, AdminSede, Tipo } from '../types';
 import { useFetchMunicipio } from '../hooks/useFetchMunicipio';
 import axios from 'axios';
 import { useLocalStorage } from '../hooks/useLocalStorage';
@@ -72,14 +72,14 @@ export function PerfilAdministrador() {
         apellidos: inputApellidosValue,
         numeroIdentificacion: inputNumeroIdentificacionValue,
         password: inputPasswordValue,
-        // idSede_as: currentMunicipio
+        nombreDepartamento: currentDepartamento,
+        nombreMunicipio: currentMunicipio
       }
       const {status} = await axios.patch(`http://localhost:3000/adminsede/${numeroIdentificacion}`, adminSede)
       if(status == 200) {
         setIsEditing(false)
       } 
     }
-
   }
 
   const eliminar = async() => {
@@ -87,13 +87,11 @@ export function PerfilAdministrador() {
       const {status} = await axios.delete(`http://localhost:3000/admindepartamento/${numeroIdentificacion}`)
       if(status == 200) {
         navigate('/administradores')
-        console.log('Procede a eliminar')
       }
     }else if(tipo == 'Sede') {
       const {status} = await axios.delete(`http://localhost:3000/adminsede/${numeroIdentificacion}`)
       if(status == 200) {
         navigate('/administradores')
-        console.log('Procede a eliminar')
       }
     }
   }
@@ -117,7 +115,7 @@ export function PerfilAdministrador() {
           <Select disabled={!isEditing} value={currentDepartamento} onChange={selectDepartamento} title='Departamento' options={departamentos}/>
         </div>
         <div className='flex items-center w-full'>
-          <Select disabled={!isEditing} value={currentMunicipio?.nombre} onChange={selectSede} title='Sede' options={municipios} />
+          <Select disabled={!isEditing} value={currentMunicipio} onChange={selectSede} title='Sede' options={municipios} />
         </div>
       </div>
     )
@@ -131,18 +129,11 @@ export function PerfilAdministrador() {
     setInputPasswordValue(administrador?.password)
     if(tipo == 'Departamento') {
       setCurrentDepartamento((administrador as AdminDepartamento)?.nombreDepartamento)
-    }else if(tipo == 'Sede') {
-      setCurrentDepartamento((administrador as AdminSedeCompleto).nombreDepartamento)
+    }else if(tipo == 'Sede' || tipo == 'Municipio') {
+      setCurrentDepartamento((administrador as AdminSede).nombreDepartamento)
+      setCurrentMunicipio((administrador as AdminSede).nombreMunicipio)
     }
-    
   }, [administrador])
-
-  // useEffect(()=> {
-  //   if(tipo == 'Sede') {
-  //     const sedeEncontrada = sedes.find(municipio => municipio.nombre == (administrador as AdminSedeCompleto).nombreSede)
-  //     if(sedeEncontrada) setCurrentMunicipio(sedeEncontrada)
-  //   }
-  // }, [sedes])
 
   useEffect(()=> {
     if(!localStorageData.isLogged) navigate('/ingresar')

@@ -2,8 +2,6 @@ import  { useEffect, useState } from 'react'
 import axios from 'axios'
 import { AdminDepartamento, AdminSede, Tipo } from '../types'
 
-// type Tipo = 'Departamento' | 'Sede' | ''
-
 interface Props {
   tipo: Tipo
 }
@@ -29,7 +27,7 @@ export default function useFetchAdministradores({tipo}: Props) {
 
   useEffect(()=> {
     if(tipo == 'Departamento') getAdministradores('Departamento')
-    if(tipo == 'Sede') getAdministradores('Sede')
+    if(tipo == 'Sede' || tipo == 'Municipio') getAdministradores('Sede')
   }, [tipo])
 
   return {administradores, administradoresFiltrados, setAdministradoresFiltrados}

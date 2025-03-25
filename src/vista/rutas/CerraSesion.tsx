@@ -10,6 +10,5 @@ export function CerraSesion() {
         <div>CerraSesion</div>
       </ContentLayout>
     </BaseLayout>
-
   )
 }

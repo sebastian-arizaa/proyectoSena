@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import { Formacion, FormacionCompleto } from '../types'
+import { Formacion} from '../types'
 
 interface Props {
   numeroIdentificacion: string | undefined
@@ -11,7 +11,7 @@ export function useFetchFormacion({numeroIdentificacion}: Props) {
 
   useEffect(()=> {
     const getFormacion = async() => {
-      const {data} = await axios(`http://localhost:3000/formaciones/uno/completo/${numeroIdentificacion}`)
+      const {data} = await axios(`http://localhost:3000/formaciones/uno/${numeroIdentificacion}`)
       setFormacion(data[0])
     }
     getFormacion()
