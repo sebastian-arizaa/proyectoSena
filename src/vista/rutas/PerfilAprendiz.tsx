@@ -9,7 +9,7 @@ import { useNavigate, useParams } from 'react-router';
 import useFetchAprendiz from '../hooks/useFetchAprendiz';
 import { Aprendiz, Sede } from '../types';
 import { useFetchDepartamentos } from '../hooks/useFetchDepartamentos';
-import { useFetchSedes } from '../hooks/useFetchSedes';
+import { useFetchMunicipio } from '../hooks/useFetchMunicipio';
 import { useFetchFormaciones } from '../hooks/useFetchFormaciones';
 import axios from 'axios';
 import { useLocalStorage } from '../hooks/useLocalStorage';
@@ -30,11 +30,11 @@ export function PerfilAprendiz() {
 
   const [departamentos] = useFetchDepartamentos()
   const [currentDepartamento, setCurrentDepartamento] = useState<string>('')
-  const {sedes} = useFetchSedes({currentDepartamento})
-  const [currentSede, setCurrentSede] = useState<Sede | null>(null)
-  const {formaciones} = useFetchFormaciones({currentSede, sedes})
+  const {municipios, setMunicipio} = useFetchMunicipio({currentDepartamento})
+  const [currentMunicipio, setCurrentMunicipio] = useState<string>('')
+  console.log('🚀 ~ PerfilAprendiz ~ currentMunicipio:', currentMunicipio)
+  const {formaciones} = useFetchFormaciones({currentMunicipio, municipios})
   const [currentFormacion, setCurrentFormacion] = useState<string>('')
-  console.log('🚀 ~ PerfilAprendiz ~ currentFormacion:', currentFormacion)
 
   const selectDepartamento = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value
@@ -43,8 +43,7 @@ export function PerfilAprendiz() {
   
   const selectSede = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value
-    const sedeEncontrada = sedes.find(sede => sede.nombre == value)
-    if(sedeEncontrada) setCurrentSede(sedeEncontrada) 
+    setCurrentMunicipio(value)
   }
 
   const selectFormacion = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -103,16 +102,17 @@ export function PerfilAprendiz() {
     setInputEmailValue(aprendiz.email ?? '')
 
     setCurrentDepartamento(aprendiz.nombreDepartamento)
+    setCurrentMunicipio(aprendiz.nombreSede)
   }, [aprendiz])
   
-  useEffect(()=> {
-    const sedeEncontrada = sedes.find(sede => sede.nombre == aprendiz.nombreSede)
-    if(sedeEncontrada) setCurrentSede(sedeEncontrada)
-  }, [sedes])
+  // useEffect(()=> {
+  //   const sedeEncontrada = sedes.find(sede => sede.nombre == aprendiz.nombreSede)
+  //   if(sedeEncontrada) setCurrentMunicipio(sedeEncontrada)
+  // }, [municipios])
 
   useEffect(()=> {
     setCurrentFormacion(aprendiz.nombreFormacion)
-  }, [currentSede])
+  }, [currentMunicipio])
 
   useEffect(()=> {
     if(!localStorageData.isLogged) navigate('/ingresar')
@@ -152,7 +152,7 @@ export function PerfilAprendiz() {
               <Select value={currentDepartamento} onChange={selectDepartamento} title='Departamento' disabled={!isEditing} options={departamentos}/>
             </div>
             <div className='flex items-center w-full'>
-              <Select value={currentSede?.nombre} onChange={selectSede} title='Sede' disabled={!isEditing} options={sedes.map(sede => sede.nombre)} />
+              <Select value={currentMunicipio} onChange={selectSede} title='Sede' disabled={!isEditing} options={municipios} />
             </div>
           </div>
           <div className='flex items-center w-full'>

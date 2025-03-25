@@ -9,6 +9,7 @@ interface Props {
 }
 
 export function Select({title, disabled, styles, width, options=[], value, onChange}: Props) {
+  console.log('🚀 ~ Select ~ value:', value)
   return (
     <div className={`flex gap-2 w-2/6 max-w-[300px] h-14 ${width}`}>
       <p className='flex items-center w-min'>{title ?  `${title}:` : title}</p>

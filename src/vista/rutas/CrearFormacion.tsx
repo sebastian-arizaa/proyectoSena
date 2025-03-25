@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { Select } from '../componentes/Select';
 import { Formacion, Sede } from '../types';
 import { useFetchDepartamentos } from '../hooks/useFetchDepartamentos';
-import { useFetchSedes } from '../hooks/useFetchSedes';
+import { useFetchMunicipio } from '../hooks/useFetchMunicipio';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
 import { useLocalStorage } from '../hooks/useLocalStorage';
@@ -23,20 +23,22 @@ export function CrearFormacion() {
   const [inputFechaFinValue, setInputFechaFinValue] = useState('')
   const [departamentos] = useFetchDepartamentos()
   const [currentDepartamento, setCurrentDepartamento] = useState<string>('')
-  const {sedes, setSedes} = useFetchSedes({currentDepartamento})
-  const [currentSede, setCurrentSede] = useState<Sede | null>(null)
+  const {municipios, setMunicipio} = useFetchMunicipio({currentDepartamento})
+  const [currentMunicipio, setCurrentMunicipio] = useState<string>('')
+  console.log('🚀 ~ CrearFormacion ~ currentMunicipio:', currentMunicipio)
   const [currentTipoFormacion, setCurrentTipoFormacion] = useState<string>('')
+  console.log('🚀 ~ CrearFormacion ~ currentTipoFormacion:', currentTipoFormacion)
  
   const selectDepartamento = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value
-    if(value == '') setSedes([])
+    if(value == '') setMunicipio([])
     setCurrentDepartamento(value)
+    setCurrentMunicipio('')
   }
 
   const selectSede = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value
-    const sedeEncontrada = sedes.find(sede => sede.nombre == value)
-    if(sedeEncontrada) setCurrentSede(sedeEncontrada) 
+    setCurrentMunicipio(value)
   }
 
   const selectTipoFormacion = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -51,19 +53,21 @@ export function CrearFormacion() {
     setInputFechaInicioValue('')
     setInputFechaFinValue('')
     setCurrentDepartamento('')
-    setCurrentSede(null)
+    setCurrentMunicipio('')
     setCurrentTipoFormacion('')
   }
 
   const crear = async () => {
     if(!inputNombreFormacionValue) return 
     if(!currentTipoFormacion) return
+    console.log('eeeeee')
     if(!inputInstructoresValue) return
     if(!inputFechaInicioValue) return
     if(!inputFechaFinValue) return
     if(!inputHorarioValue) return
-    if(!currentSede) return
+    if(!currentMunicipio) return
 
+    console.log('eee')
     const formacion: Formacion = {
       nombre: inputNombreFormacionValue,
       numeroIdentificacion: '',
@@ -72,13 +76,14 @@ export function CrearFormacion() {
       fechaInicio: inputFechaInicioValue,
       fechaFin: inputFechaFinValue,
       horario: inputHorarioValue,
-      idSede: currentSede?.numeroIdentificacion
+      // idSede: currentMunicipio?.numeroIdentificacion
     }
+    console.log('🚀 ~ crear ~ formacion:', formacion)
 
-    const {status} = await axios.post('http://localhost:3000/formaciones', formacion)
-    if(status == 200) {
-      limpiarFormulario()
-    }
+    // const {status} = await axios.post('http://localhost:3000/formaciones', formacion)
+    // if(status == 200) {
+    //   limpiarFormulario()
+    // }
   }
 
   const returnOnClicks = () => {
@@ -101,7 +106,7 @@ export function CrearFormacion() {
               <Select onChange={selectDepartamento} title='Departamento' options={departamentos}/>
             </div>
             <div className='flex items-center w-full'>
-              <Select onChange={selectSede} title='Sede' options={sedes.map(sede => sede.nombre)} />
+              <Select value={currentMunicipio} onChange={selectSede} title='Municipio' options={municipios} />
             </div>
           </div>
           

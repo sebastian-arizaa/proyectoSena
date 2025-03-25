@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { Select } from '../componentes/Select';
 import { Aprendiz, Sede } from '../types';
 import { useFetchDepartamentos } from '../hooks/useFetchDepartamentos';
-import { useFetchSedes } from '../hooks/useFetchSedes';
+import { useFetchMunicipio } from '../hooks/useFetchMunicipio';
 import { useFetchFormaciones } from '../hooks/useFetchFormaciones';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
@@ -25,9 +25,9 @@ export function CrearAprendiz() {
 
   const [departamentos] = useFetchDepartamentos()
   const [currentDepartamento, setCurrentDepartamento] = useState<string>('')
-  const {sedes, setSedes} = useFetchSedes({currentDepartamento})
-  const [currentSede, setCurrentSede] = useState<Sede | null>(null)
-  const {formaciones, setFormaciones} = useFetchFormaciones({currentSede, sedes})
+  const {municipios, setMunicipio} = useFetchMunicipio({currentDepartamento})
+  const [currentMunicipio, setCurrentMunicipio] = useState<string>('')
+  const {formaciones, setFormaciones} = useFetchFormaciones({currentMunicipio, municipios})
   const [currentFormacion, setCurrentFormacion] = useState<string>('')
 
   
@@ -39,11 +39,10 @@ export function CrearAprendiz() {
   const selectSede = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value
     if(value == '') {
-      setCurrentSede(null)
+      setCurrentMunicipio('')
       setFormaciones([])
     }else {
-      const sedeEncontrada = sedes.find(sede => sede.nombre == value)
-      if(sedeEncontrada) setCurrentSede(sedeEncontrada) 
+      setCurrentMunicipio(value)
     }
   }
 
@@ -59,8 +58,8 @@ export function CrearAprendiz() {
     setInputCelularValue('')
     setInputEmailValue('')
     setCurrentDepartamento('')
-    setCurrentSede(null)
-    setSedes([])
+    setCurrentMunicipio(null)
+    setMunicipio([])
     setCurrentFormacion('')
   }
 
@@ -130,7 +129,7 @@ export function CrearAprendiz() {
               <Select onChange={selectDepartamento} value={currentDepartamento} title='Departamento' options={departamentos}/>
             </div>
             <div className='flex items-center w-full'>
-              <Select onChange={selectSede} title='Sede' options={sedes.map(sede => sede.nombre)} />
+              <Select onChange={selectSede} title='Sede' options={municipios} />
             </div>
           </div>
           <div className='flex items-center w-full'>

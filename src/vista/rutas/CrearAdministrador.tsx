@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { Select } from '../componentes/Select';
 import { Sede, Tipo } from '../types';
 import { useFetchDepartamentos } from '../hooks/useFetchDepartamentos';
-import { useFetchSedes } from '../hooks/useFetchSedes';
+import { useFetchMunicipio } from '../hooks/useFetchMunicipio';
 import { AdminDepartamento, AdminSede } from '../types';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
@@ -27,8 +27,8 @@ export function CrearAdministrador() {
 
   const [departamentos] = useFetchDepartamentos()
   const [currentDepartamento, setCurrentDepartamento] = useState<string>('')
-  const {sedes, setSedes} = useFetchSedes({currentDepartamento, tipo})
-  const [currentSede, setCurrentSede] = useState<Sede | null>(null)
+  const {municipios, setMunicipio} = useFetchMunicipio({currentDepartamento, tipo})
+  const [currentMunicipio, setCurrentMunicipio] = useState<string>('')
 
   const selectTipo = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value
@@ -40,15 +40,16 @@ export function CrearAdministrador() {
 
   const selectDepartamento = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value
-    if(value == '') setSedes([])
+    if(value == '') setMunicipio([])
     setCurrentDepartamento(value)
   }
 
   const selectSede = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value
-    if(value == '') setCurrentSede(null)
-    const sedeEncontrada = sedes.find(sede => sede.nombre == value)
-    if(sedeEncontrada) setCurrentSede(sedeEncontrada) 
+    setCurrentMunicipio(value)
+    // if(value == '') setCurrentMunicipio(null)
+    // const sedeEncontrada = sedes.find(sede => sede.nombre == value)
+    // if(sedeEncontrada) setCurrentMunicipio(sedeEncontrada) 
   }
 
   const limpiarFormulario = () => {
@@ -58,7 +59,7 @@ export function CrearAdministrador() {
     setInputPasswordValue('')
     setTipo('')
     setCurrentDepartamento('')
-    setCurrentSede(null)
+    setCurrentMunicipio('')
   }
 
   const crear = async () => {
@@ -86,13 +87,13 @@ export function CrearAdministrador() {
       if(!inputApellidosValue) return
       if(!inputNumeroIdentificacionValue) return
       if(!inputPasswordValue) return
-      if(!currentSede) return
+      if(!currentMunicipio) return
       const administrador: AdminSede = {
         nombre: inputNombreValue,
         apellidos: inputApellidosValue,
         numeroIdentificacion: inputNumeroIdentificacionValue,
         password: inputPasswordValue,
-        idSede_as: currentSede.numeroIdentificacion.toString()
+        // idSede_as: currentMunicipio.numeroIdentificacion.toString()
       }
       const {status} = await axios.post('http://localhost:3000/adminsede', administrador)
       if(status == 200) {
@@ -120,7 +121,7 @@ export function CrearAdministrador() {
           <Select onChange={selectDepartamento} title='Departamento' options={departamentos}/>
         </div>
         <div className='flex items-center w-full'>
-          <Select onChange={selectSede} title='Sede' options={sedes.map(sede => sede.nombre)} />
+          <Select onChange={selectSede} title='Sede' options={municipios} />
         </div>
       </div>
     )

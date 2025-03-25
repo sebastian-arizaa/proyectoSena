@@ -9,7 +9,7 @@ import { useNavigate, useParams } from 'react-router';
 import useFetchAdministrador from '../hooks/useFetchAdministrador';
 import { useFetchDepartamentos } from '../hooks/useFetchDepartamentos';
 import { AdminDepartamento, AdminSede, AdminSedeCompleto, Sede, Tipo } from '../types';
-import { useFetchSedes } from '../hooks/useFetchSedes';
+import { useFetchMunicipio } from '../hooks/useFetchMunicipio';
 import axios from 'axios';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 
@@ -27,21 +27,20 @@ export function PerfilAdministrador() {
 
   const [departamentos] = useFetchDepartamentos()
   const [currentDepartamento, setCurrentDepartamento] = useState<string>('')
-  const {sedes, setSedes} = useFetchSedes({currentDepartamento, tipo})
-  const [currentSede, setCurrentSede] = useState<Sede | null>(null)
+  const {municipios, setMunicipio} = useFetchMunicipio({currentDepartamento, tipo})
+  const [currentMunicipio, setCurrentMunicipio] = useState<string>('')
 
   const [isEditing, setIsEditing] = useState(false)
 
   const selectDepartamento = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value
-    if(value == '') setSedes([])
+    if(value == '') setMunicipio([])
     setCurrentDepartamento(value)
   }
 
   const selectSede = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value
-    const sedeEncontrada = sedes.find(sede => sede.nombre == value)
-    if(sedeEncontrada) setCurrentSede(sedeEncontrada) 
+    setCurrentMunicipio(value)
   }
 
   const toggleEdit = (isEditing: boolean) => {
@@ -73,7 +72,7 @@ export function PerfilAdministrador() {
         apellidos: inputApellidosValue,
         numeroIdentificacion: inputNumeroIdentificacionValue,
         password: inputPasswordValue,
-        idSede_as: currentSede?.numeroIdentificacion.toString()
+        // idSede_as: currentMunicipio
       }
       const {status} = await axios.patch(`http://localhost:3000/adminsede/${numeroIdentificacion}`, adminSede)
       if(status == 200) {
@@ -118,7 +117,7 @@ export function PerfilAdministrador() {
           <Select disabled={!isEditing} value={currentDepartamento} onChange={selectDepartamento} title='Departamento' options={departamentos}/>
         </div>
         <div className='flex items-center w-full'>
-          <Select disabled={!isEditing} value={currentSede?.nombre} onChange={selectSede} title='Sede' options={sedes.map(sede => sede.nombre)} />
+          <Select disabled={!isEditing} value={currentMunicipio?.nombre} onChange={selectSede} title='Sede' options={municipios} />
         </div>
       </div>
     )
@@ -138,12 +137,12 @@ export function PerfilAdministrador() {
     
   }, [administrador])
 
-  useEffect(()=> {
-    if(tipo == 'Sede') {
-      const sedeEncontrada = sedes.find(sede => sede.nombre == (administrador as AdminSedeCompleto).nombreSede)
-      if(sedeEncontrada) setCurrentSede(sedeEncontrada)
-    }
-  }, [sedes])
+  // useEffect(()=> {
+  //   if(tipo == 'Sede') {
+  //     const sedeEncontrada = sedes.find(municipio => municipio.nombre == (administrador as AdminSedeCompleto).nombreSede)
+  //     if(sedeEncontrada) setCurrentMunicipio(sedeEncontrada)
+  //   }
+  // }, [sedes])
 
   useEffect(()=> {
     if(!localStorageData.isLogged) navigate('/ingresar')

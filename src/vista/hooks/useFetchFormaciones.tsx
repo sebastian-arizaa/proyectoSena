@@ -7,14 +7,14 @@ interface Props {
   sedes: Sede[]
 }
 
-export function useFetchFormaciones({currentSede, sedes}: Props) {
+export function useFetchFormaciones({currentSede, municipios}: Props) {
   const [formaciones, setFormaciones] = useState<Formacion[]>([])
   const [formacionesFiltradas, setFormacionesFiltradas] = useState<Formacion[]>([])
 
   useEffect(()=> {
     if(currentSede) {
       const getFormaciones = async() => {
-        const {data} = await axios(`http://localhost:3000/formaciones/por-sede/${currentSede.numeroIdentificacion}`)
+        const {data} = await axios(`http://localhost:3000/formaciones/por-municipio/${currentSede.numeroIdentificacion}`)
         setFormaciones(data)
         setFormacionesFiltradas(data)
       }
@@ -23,11 +23,11 @@ export function useFetchFormaciones({currentSede, sedes}: Props) {
   }, [currentSede])
 
   useEffect(()=> {
-    if(!sedes.length) {
+    if(!municipios.length) {
       setFormaciones([])
       setFormacionesFiltradas([])
     }
-  }, [sedes])
+  }, [municipios])
 
   return {formaciones, formacionesFiltradas, setFormacionesFiltradas, setFormaciones}
 }

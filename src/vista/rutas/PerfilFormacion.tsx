@@ -9,7 +9,7 @@ import { useNavigate, useParams } from 'react-router';
 import { useFetchFormacion } from '../hooks/useFetchFormacion';
 import { useFetchDepartamentos } from '../hooks/useFetchDepartamentos';
 import { Formacion, Sede } from '../types';
-import { useFetchSedes } from '../hooks/useFetchSedes';
+import { useFetchMunicipio } from '../hooks/useFetchMunicipio';
 import axios from 'axios';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 
@@ -28,7 +28,7 @@ export function PerfilFormacion() {
   const [departamentos] = useFetchDepartamentos()
   const [currentDepartamento, setCurrentDepartamento] = useState<string>('')
   console.log('🚀 ~ PerfilFormacion ~ currentDepartamento:', currentDepartamento)
-  const {sedes, setSedes} = useFetchSedes({currentDepartamento})
+  const {municipio, setMunicipio} = useFetchMunicipio({currentDepartamento})
   const [currentSede, setCurrentSede] = useState<Sede | null>(null)
   const [currentTipoFormacion, setCurrentTipoFormacion] = useState<string>('')
 

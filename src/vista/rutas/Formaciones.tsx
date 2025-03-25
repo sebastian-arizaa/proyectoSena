@@ -8,7 +8,7 @@ import { Select } from '../componentes/Select';
 import Table from '../componentes/Table';
 import { Sede } from '../types';
 import { useFetchDepartamentos } from '../hooks/useFetchDepartamentos';
-import { useFetchSedes } from '../hooks/useFetchSedes';
+import { useFetchMunicipio } from '../hooks/useFetchMunicipio';
 import { useFetchFormaciones } from '../hooks/useFetchFormaciones';
 import { useNavigate } from 'react-router';
 import { useLocalStorage } from '../hooks/useLocalStorage';
@@ -20,9 +20,12 @@ export function Datos() {
 
   const [departamentos] = useFetchDepartamentos()
   const [currentDepartamento, setCurrentDepartamento] = useState<string>('')
-  const {sedes} = useFetchSedes({currentDepartamento})
-  const [currentSede, setCurrentSede] = useState<Sede | null>(null)
-  const {formaciones, formacionesFiltradas, setFormacionesFiltradas} = useFetchFormaciones({currentSede, sedes})
+  console.log('🚀 ~ Datos ~ currentDepartamento:', currentDepartamento)
+  const {municipios} = useFetchMunicipio({currentDepartamento})
+  // console.log('🚀 ~ Datos ~ municipio:', municipios)
+  const [currentMunicipio, setCurrentMunicipio] = useState<string>('')
+  console.log('🚀 ~ Datos ~ currentMunicipio:', currentMunicipio)
+  const {formaciones, formacionesFiltradas, setFormacionesFiltradas} = useFetchFormaciones({currentMunicipio, municipios})
   const [inputFormacionValue, setInputFormacionValue] = useState('')
 
   const selectDepartamento = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -30,14 +33,16 @@ export function Datos() {
     setCurrentDepartamento(value)
   }
 
-  const selectSede = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const selectMunicipio = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value
     if(value == '') {
-      setCurrentSede(null)
+      setCurrentMunicipio('')
       setFormacionesFiltradas([])
     }else {
-      const sedeEncontrada = sedes.find(sede => sede.nombre == value)
-      if(sedeEncontrada) setCurrentSede(sedeEncontrada) 
+      console.log(value)
+      setCurrentMunicipio(value)
+      // const sedeEncontrada = sedes.find(sede => sede.nombre == value)
+      // if(sedeEncontrada) setCurrentSede(sedeEncontrada) 
     }
   }
 
@@ -57,7 +62,7 @@ export function Datos() {
         <div className='flex flex-col w-full h-full'>
           <div className='flex items-end gap-4 py-4'>
             <Select onChange={selectDepartamento} title='Departamento' options={departamentos}/>
-            <Select onChange={selectSede} title='Sede' options={sedes.map(sede => sede.nombre)}/>
+            <Select value={currentMunicipio} onChange={selectMunicipio} title='Municipio' options={municipios}/>
             <div className='flex items-center gap-2 w-2/6 max-w-[500px] h-14'>
               <p className='flex items-center w-min'>Formacion:</p>
               <div className='w-full'>
