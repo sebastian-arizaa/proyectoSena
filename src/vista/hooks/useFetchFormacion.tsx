@@ -1,13 +1,13 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import { FormacionCompleto } from '../types'
+import { Formacion, FormacionCompleto } from '../types'
 
 interface Props {
   numeroIdentificacion: string | undefined
 }
 
 export function useFetchFormacion({numeroIdentificacion}: Props) {
-  const [formacion, setFormacion] = useState<FormacionCompleto>(formacionCompletoBase)
+  const [formacion, setFormacion] = useState<Formacion>(formacionCompletoBase)
 
   useEffect(()=> {
     const getFormacion = async() => {
@@ -20,15 +20,14 @@ export function useFetchFormacion({numeroIdentificacion}: Props) {
   return [formacion]
 }
 
-const formacionCompletoBase: FormacionCompleto = {
+const formacionCompletoBase: Formacion = {
   nombre: '',
   fechaFin: '',
   fechaInicio: '',
   horario: '',
   instructores: '',
   nombreDepartamento: '',
-  nombreSede: '',
   numeroIdentificacion: '',
   tipo: '',
-  idSede: ''
+  nombreMunicipio: ''
 }

@@ -5,7 +5,7 @@ import { MenuContainer } from '../componentes/MenuContainer';
 import { Form } from '../componentes/Form';
 import { useEffect, useState } from 'react';
 import { Select } from '../componentes/Select';
-import { Formacion, Sede } from '../types';
+import { Formacion} from '../types';
 import { useFetchDepartamentos } from '../hooks/useFetchDepartamentos';
 import { useFetchMunicipio } from '../hooks/useFetchMunicipio';
 import axios from 'axios';
@@ -20,6 +20,7 @@ export function CrearFormacion() {
   const [inputInstructoresValue, setInputInstructoresValue] = useState('')
   const [inputHorarioValue, setInputHorarioValue] = useState('')
   const [inputFechaInicioValue, setInputFechaInicioValue] = useState('')
+  console.log('🚀 ~ CrearFormacion ~ inputFechaInicioValue:', inputFechaInicioValue)
   const [inputFechaFinValue, setInputFechaFinValue] = useState('')
   const [departamentos] = useFetchDepartamentos()
   const [currentDepartamento, setCurrentDepartamento] = useState<string>('')
@@ -76,14 +77,15 @@ export function CrearFormacion() {
       fechaInicio: inputFechaInicioValue,
       fechaFin: inputFechaFinValue,
       horario: inputHorarioValue,
-      // idSede: currentMunicipio?.numeroIdentificacion
+      nombreDepartamento: currentDepartamento,
+      nombreMunicipio: currentMunicipio
     }
     console.log('🚀 ~ crear ~ formacion:', formacion)
 
-    // const {status} = await axios.post('http://localhost:3000/formaciones', formacion)
-    // if(status == 200) {
-    //   limpiarFormulario()
-    // }
+    const {status} = await axios.post('http://localhost:3000/formaciones', formacion)
+    if(status == 200) {
+      limpiarFormulario()
+    }
   }
 
   const returnOnClicks = () => {
@@ -103,7 +105,7 @@ export function CrearFormacion() {
         <Form isEditing={true} onClicks={returnOnClicks()}  isCreating={true} title="Crear Formación">
           <div className='flex gap-4'>
             <div className='flex items-center w-full'>
-              <Select onChange={selectDepartamento} title='Departamento' options={departamentos}/>
+              <Select value={currentDepartamento} onChange={selectDepartamento} title='Departamento' options={departamentos}/>
             </div>
             <div className='flex items-center w-full'>
               <Select value={currentMunicipio} onChange={selectSede} title='Municipio' options={municipios} />

@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { useFetchFormacion } from '../hooks/useFetchFormacion';
 import { useFetchDepartamentos } from '../hooks/useFetchDepartamentos';
-import { Formacion, Sede } from '../types';
+import { Formacion } from '../types';
 import { useFetchMunicipio } from '../hooks/useFetchMunicipio';
 import axios from 'axios';
 import { useLocalStorage } from '../hooks/useLocalStorage';
@@ -28,8 +28,8 @@ export function PerfilFormacion() {
   const [departamentos] = useFetchDepartamentos()
   const [currentDepartamento, setCurrentDepartamento] = useState<string>('')
   console.log('🚀 ~ PerfilFormacion ~ currentDepartamento:', currentDepartamento)
-  const {municipio, setMunicipio} = useFetchMunicipio({currentDepartamento})
-  const [currentSede, setCurrentSede] = useState<Sede | null>(null)
+  const {municipios, setMunicipio} = useFetchMunicipio({currentDepartamento})
+  const [currentMunicipio, setCurrentMunicipio] = useState<string>('')
   const [currentTipoFormacion, setCurrentTipoFormacion] = useState<string>('')
 
   const [isEditing, setIsEditing] = useState(false)
@@ -46,23 +46,23 @@ export function PerfilFormacion() {
     setInputFechaFinValue(formacion?.fechaFin.slice(0, 10))
     setCurrentTipoFormacion(formacion?.tipo)
     setCurrentDepartamento(formacion?.nombreDepartamento)
+    setCurrentMunicipio(formacion?.nombreMunicipio)
   }, [formacion])
 
-  useEffect(()=> {
-    const sedeEncontrada = sedes.find(sede => sede.nombre == formacion.nombreSede)
-    if(sedeEncontrada) setCurrentSede(sedeEncontrada)
-  }, [sedes])
+  // useEffect(()=> {
+  //   const sedeEncontrada = sedes.find(sede => sede.nombre == formacion.nombreSede)
+  //   if(sedeEncontrada) setCurrentMunicipio(sedeEncontrada)
+  // }, [sedes])
 
   const selectDepartamento = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value
-    if(value == '') setSedes([])
+    if(value == '') setMunicipio([])
     setCurrentDepartamento(value)
   }
 
-  const selectSede = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const selectMunicipio = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value
-    const sedeEncontrada = sedes.find(sede => sede.nombre == value)
-    if(sedeEncontrada) setCurrentSede(sedeEncontrada) 
+    setCurrentMunicipio(value)
   }
 
   const selectTipoFormacion = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -92,7 +92,8 @@ export function PerfilFormacion() {
       fechaInicio: inputFechaInicioValue,
       fechaFin: inputFechaFinValue,
       numeroIdentificacion: formacion.numeroIdentificacion,
-      idSede: formacion.idSede
+      nombreDepartamento: currentDepartamento,
+      nombreMunicipio: currentMunicipio
     }
 
     const {status} = await axios.patch(`http://localhost:3000/formaciones/${numeroIdentificacion}`, newFormacion)
@@ -131,10 +132,10 @@ export function PerfilFormacion() {
         <Form onClicks={returnOnClicks()} isCreating={false} toggleEdit={toggleEdit} isEditing={isEditing} title="Perfil Formacion">
           <div className='flex gap-4'>
             <div className='flex items-center w-full'>
-              <Select disabled={true} value={currentDepartamento} onChange={selectDepartamento} title='Departamento' options={departamentos}/>
+              <Select disabled={!isEditing} value={currentDepartamento} onChange={selectDepartamento} title='Departamento' options={departamentos}/>
             </div>
             <div className='flex items-center w-full'>
-              <Select disabled={true} value={currentSede?.nombre} onChange={selectSede} title='Sede' options={sedes.map(sede => sede.nombre)} />
+              <Select disabled={!isEditing} value={currentMunicipio} onChange={selectMunicipio} title='Sede' options={municipios} />
             </div>
           </div>
           

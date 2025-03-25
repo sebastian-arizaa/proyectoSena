@@ -7,12 +7,12 @@ export type Departamentos = {
   name: string,
 }
 
-export type Sede = {
-  numeroIdentificacion: number,
-  nombre: string,
-  nombreDepartamento: string,
-  nombreMunicipio: string,
-}
+// export type Sede = {
+//   numeroIdentificacion: number,
+//   nombre: string,
+//   nombreDepartamento: string,
+//   nombreMunicipio: string,
+// }
 
 export type Formacion = {
   numeroIdentificacion: string,
@@ -22,7 +22,8 @@ export type Formacion = {
   horario: string,
   fechaInicio: string,
   fechaFin: string,
-  idSede: string
+  nombreDepartamento: string,
+  nombreMunicipio: string,
 }
 
 export type Admin = {
@@ -39,7 +40,8 @@ export type AdminDepartamento = Admin & {
 export type AdminSede = Admin & {
   nombre: string,
   apellidos: string,
-  idSede_as?: string
+  nombreDepartamento: string,
+  nombreMunicipio: string,
 }
 
 export type Aprendiz = {
@@ -52,19 +54,19 @@ export type Aprendiz = {
 }
 
 export type AprendizCompleto = Aprendiz & {
-  nombreFormacion: string 
-  nombreSede: string 
-  nombreDepartamento: string 
+  nombreFormacion: string, 
+  nombreDepartamento: string, 
+  nombreMunicipio: string,
 }
 
-export type FormacionCompleto = Formacion & {
-  nombreDepartamento: string,
-  nombreSede: string
-}
+// export type FormacionCompleto = Formacion & {
+//   nombreDepartamento: string,
+//   nombreSede: string
+// }
 
-export type AdminSedeCompleto = Omit<AdminSede, 'idSede_as'> & {
-  nombreDepartamento: string,
-  nombreSede: string
-}
+// export type AdminSedeCompleto = Omit<AdminSede, 'idSede_as'> & {
+//   nombreDepartamento: string,
+//   nombreSede: string
+// }
 
 export type Tipo = 'Departamento' | 'Sede' | ''
