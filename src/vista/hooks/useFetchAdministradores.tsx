@@ -10,14 +10,16 @@ export default function useFetchAdministradores({tipo}: Props) {
   const [administradores, setAdministradores] = useState<AdminDepartamento[] | AdminSede[]>([])
   const [administradoresFiltrados, setAdministradoresFiltrados] = useState<AdminDepartamento[] | AdminSede[]>([])
 
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+  
   const getAdministradores = (tipo: Tipo) => {
     const getAdminsDepartamento = async() => {
-      const {data} = await axios('http://localhost:3000/admindepartamento/todos')
+      const {data} = await axios(`${API_URL}/admindepartamento/todos`)
       setAdministradores(data)
       setAdministradoresFiltrados(data)
     }
     const getAdminsSede = async() => {
-      const {data} = await axios('http://localhost:3000/adminsede/todos')
+      const {data} = await axios(`${API_URL}/adminsede/todos`)
       setAdministradores(data)
       setAdministradoresFiltrados(data)
     }

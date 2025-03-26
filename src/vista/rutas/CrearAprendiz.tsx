@@ -3,19 +3,19 @@ import { BaseLayout } from '../componentes/layouts/BaseLayout';
 import { ContentLayout } from '../componentes/layouts/ContentLayout';
 import { MenuContainer } from '../componentes/MenuContainer';
 import { Form } from '../componentes/Form';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Select } from '../componentes/Select';
 import { Aprendiz} from '../types';
 import { useFetchDepartamentos } from '../hooks/useFetchDepartamentos';
 import { useFetchMunicipio } from '../hooks/useFetchMunicipio';
 import { useFetchFormaciones } from '../hooks/useFetchFormaciones';
 import axios from 'axios';
-import { useNavigate } from 'react-router';
-import { useLocalStorage } from '../hooks/useLocalStorage';
+// import { useNavigate } from 'react-router';
+// import { useLocalStorage } from '../hooks/useLocalStorage';
 
 export function CrearAprendiz() {
-  const navigate = useNavigate()
-  const {localStorageData} = useLocalStorage()
+  // const navigate = useNavigate()
+  // const {localStorageData} = useLocalStorage()
 
   const [inputNombreValue, setInputNombreValue] = useState('')
   const [inputApellidosValue, setInputApellidosValue] = useState('')
@@ -30,6 +30,7 @@ export function CrearAprendiz() {
   const {formaciones, setFormaciones} = useFetchFormaciones({currentMunicipio, municipios})
   const [currentFormacion, setCurrentFormacion] = useState<string>('')
 
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
   
   const selectDepartamento = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value
@@ -79,7 +80,7 @@ export function CrearAprendiz() {
       email: inputEmailValue,
       idFormacion: formaciones.find(formacion => formacion.nombre == currentFormacion)?.numeroIdentificacion.toString() ?? null
     }
-    const {status} = await axios.post('http://localhost:3000/aprendices', aprendiz)
+    const {status} = await axios.post(`${API_URL}/aprendices`, aprendiz)
     if(status == 200) {
       limpiarFormulario()
     }
@@ -91,9 +92,9 @@ export function CrearAprendiz() {
     }
   }
 
-  useEffect(()=> {
-    if(!localStorageData.isLogged) navigate('/ingresar')
-  }, [])
+  // useEffect(()=> {
+  //   if(!localStorageData.isLogged) navigate('/ingresar')
+  // }, [])
 
   return (
     <BaseLayout>

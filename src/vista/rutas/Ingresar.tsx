@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { IngresarInput } from '../componentes/InputIngresar'
 import { Button } from '../componentes/Button'
 import { FaUserAlt } from 'react-icons/fa';
@@ -7,11 +7,11 @@ import { useNavigate } from 'react-router'
 import { BaseLayout } from '../componentes/layouts/BaseLayout';
 import { ContentLayout } from '../componentes/layouts/ContentLayout';
 import axios from 'axios';
-import { useLocalStorage } from '../hooks/useLocalStorage';
+// import { useLocalStorage } from '../hooks/useLocalStorage';
 
 export function Ingresar() {
   const navigate = useNavigate()
-  const {localStorageData, saveItemData: setLocalStorage} = useLocalStorage()
+  // const {localStorageData, saveItemData: setLocalStorage} = useLocalStorage()
 
   const [adminButtons, setAdminButtons] = useState([
     {nombre: 'root', isActive: false},
@@ -20,6 +20,8 @@ export function Ingresar() {
   ])
   const [inputNumeroIdentificacionValue, setInputNumeroIdentificacionValue] = useState('')
   const [inputPasswordValue, setInputPasswordValue] = useState('')
+
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
   const activeButton = (index: number) => {
     const buttonCopy = [...adminButtons]
@@ -35,25 +37,25 @@ export function Ingresar() {
 
     let adminData = {numeroIdentificacion: null}
     if(adminRootBtn.isActive) {
-      const {data} = await axios(`http://localhost:3000/adminroot/por-ingresar/${inputNumeroIdentificacionValue}/${inputPasswordValue}`)
+      const {data} = await axios(`${API_URL}/adminroot/por-ingresar/${inputNumeroIdentificacionValue}/${inputPasswordValue}`)
       adminData = data[0]
     }else if (adminDepartamentoBtn.isActive) {
-      const {data} = await axios(`http://localhost:3000/admindepartamento/por-ingresar/${inputNumeroIdentificacionValue}/${inputPasswordValue}`)
+      const {data} = await axios(`${API_URL}/admindepartamento/por-ingresar/${inputNumeroIdentificacionValue}/${inputPasswordValue}`)
       adminData = data[0]
     }else if(adminSedeBtn.isActive) {
-      const {data} = await axios(`http://localhost:3000/adminsede/por-ingresar/${inputNumeroIdentificacionValue}/${inputPasswordValue}`)
+      const {data} = await axios(`${API_URL}/adminsede/por-ingresar/${inputNumeroIdentificacionValue}/${inputPasswordValue}`)
       adminData = data[0]
     }
 
     if(adminData.numeroIdentificacion){
-      setLocalStorage('proyectoSena', {isLogged: true})
+      // setLocalStorage('proyectoSena', {isLogged: true})
       navigate('/formaciones')
     } 
   }
 
-  useEffect(()=> {
-    if(localStorageData.isLogged) navigate('/formaciones')
-  }, [])
+  // useEffect(()=> {
+  //   if(localStorageData.isLogged) navigate('/formaciones')
+  // }, [])
 
   return (
     <BaseLayout>

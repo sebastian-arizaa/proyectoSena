@@ -9,9 +9,11 @@ interface Props {
 export function useFetchFormacion({numeroIdentificacion}: Props) {
   const [formacion, setFormacion] = useState<Formacion>(formacionCompletoBase)
 
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
   useEffect(()=> {
     const getFormacion = async() => {
-      const {data} = await axios(`http://localhost:3000/formaciones/uno/${numeroIdentificacion}`)
+      const {data} = await axios(`${API_URL}/formaciones/uno/${numeroIdentificacion}`)
       setFormacion(data[0])
     }
     getFormacion()
