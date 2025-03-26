@@ -7,26 +7,32 @@
   --color-primary-hover: oklch(0.527 0.154 150.069);
   --color-primary-focus: oklch(0.527 0.154 150.069);
 
-  --color-secondary:  oklch(0.872 0.01 258.338);
+  --color-secondary: oklch(0.872 0.01 258.338);
   --color-secondary-hover: oklch(0.707 0.022 261.325);
   --color-secondary-focus: oklch(0.707 0.022 261.325);
 
   --color-third: white;
   --color-third-hover: oklch(0.928 0.006 264.531);
-  --color-third-focus : white;
+  --color-third-focus: white;
 
   --color-primary-text: white;
   --color-secondary-text: black;
+
+  --text-xxs: 0.5rem
 }
 
 @theme {
   --animate-notif: notif 2s ease-in-out forwards;
+
   @keyframes notif {
+
     0%,
     100% {
       transform: translateY(0%);
     }
-    30%, 90% {
+
+    30%,
+    90% {
       transform: translateY(100%);
     }
   }
@@ -45,7 +51,7 @@
 }
 
 option {
-  max-width:150px;
+  max-width: 150px;
   text-overflow: clip;
   font-size: 12px;
   /* height: 10p; */
@@ -61,3 +67,9 @@ option {
   --color-secondary:  oklch(0.872 0.01 258.338);
   --color-secondary-hover :  oklch(0.707 0.022 261.325);
 } */
+
+@media (max-width: 400px) {
+  :root {
+    font-size: 0.9rem;
+  }
+}

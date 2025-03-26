@@ -117,7 +117,7 @@ export function PerfilFormacion() {
       <ContentLayout>
         <MenuContainer/>
         <Form onClicks={returnOnClicks()} isCreating={false} toggleEdit={toggleEdit} isEditing={isEditing} title="Perfil Formacion">
-          <div className='flex gap-4'>
+          <div className='flex gap-4 max-sm:flex-col max-sm:gap-2'>
             <div className='flex items-center w-full'>
               <Select disabled={!isEditing} value={currentDepartamento} onChange={selectDepartamento} title='Departamento' options={departamentos}/>
             </div>
@@ -130,7 +130,7 @@ export function PerfilFormacion() {
             <Select disabled={!isEditing} value={currentTipoFormacion} onChange={selectTipoFormacion} width='w-full' title='Tipo' options={['Tecnólogo', 'Técnico']}/>
           </div>
 
-          <div className='flex gap-4'>
+          <div className='flex gap-4 max-sm:flex-col max-sm:gap-2'>
             <div className='flex flex-col w-full'>
               <p>Nombre De Formación</p>
               <Input disabled={!isEditing} value={inputNombreFormacionValue} setValue={setInputNombreFormacionValue} type='text'/>

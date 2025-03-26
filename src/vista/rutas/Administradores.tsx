@@ -15,7 +15,7 @@ export function Administradores() {
   const navigate = useNavigate()
   const {localStorageData} = useLocalStorage()
   
-  const [tipo, setTipo] = useState<Tipo>('')
+  const [tipo, setTipo] = useState<Tipo>('Departamento')
   const {administradores, administradoresFiltrados, setAdministradoresFiltrados} = useFetchAdministradores({tipo})
   const [inputAdministradorValue, setInputFormacionValue] = useState('')
 
@@ -44,9 +44,9 @@ export function Administradores() {
       <ContentLayout>
         <MenuContainer/>
         <div className='flex flex-col w-full h-full'>
-          <div className='flex items-end gap-4 py-4'>
-            <Select onChange={selectTipo} title='Tipo' options={['Departamento', 'Municipio']}/>
-            <div className='flex items-center gap-2 w-2/6 max-w-[500px] h-14'>
+          <div className='flex items-end gap-4 py-4 max-sm:grid max-sm:gap-2'>
+            <Select value={tipo} onChange={selectTipo} title='Tipo' options={['Departamento', 'Municipio']}/>
+            <div className='flex items-center gap-2 w-2/6 max-w-[500px] h-14 max-sm:w-full'>
               <p className='flex items-center w-min'>Nombre:</p>
               <div className='w-full'>
                 <Input setValue={setInputFormacionValue} type='text'/>

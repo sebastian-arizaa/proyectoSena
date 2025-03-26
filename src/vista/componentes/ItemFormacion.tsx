@@ -25,7 +25,7 @@ export function ItemFormacion({Icon, itemData}: Props) {
         <p className='flex items-center'>{itemData.nombre}</p>
       </div>
       <div className="flex items-center gap-4">
-        <Button onClick={goToAprendices} type='primary'>Ver Aprendices</Button>
+        <Button styles='max-sm:text-xxs' onClick={goToAprendices} type='primary'>Ver Aprendices</Button>
         <p>{itemData.nombreMunicipio}</p>
       </div>
     </div>

@@ -1,5 +1,4 @@
-import { HashRouter, Route, Routes } from 'react-router'
-// import { Home } from './rutas/Home'
+import { HashRouter, Route, Routes} from 'react-router-dom'
 import { Ingresar } from './rutas/Ingresar'
 import { Datos } from './rutas/Formaciones'
 import { Perfil } from './rutas/Perfil'
@@ -12,14 +11,12 @@ import { Aprendices } from './rutas/Aprendices'
 import { CrearAdministrador } from './rutas/CrearAdministrador'
 import { CrearAprendiz } from './rutas/CrearAprendiz'
 import { CrearFormacion } from './rutas/CrearFormacion'
-import { getLocalStorege } from './utils/localstorage'
 
 function App() {
   return (
     <>
       <HashRouter>
         <Routes>
-          {/* <Route path='/' element={<Home/>}/> */}
           <Route path='/ingresar' element={<Ingresar/>}/>
           <Route path='/perfil' element={<Perfil/>}/>
           <Route path='/perfiladministrador/:tipo/:numeroIdentificacion' element={<PerfilAdministrador/>}/>

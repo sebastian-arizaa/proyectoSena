@@ -100,7 +100,7 @@ export function CrearAprendiz() {
       <ContentLayout>
         <MenuContainer/>
         <Form isEditing={true} onClicks={returnOnClicks()}  isCreating={true} title="Crear Aprendiz">
-          <div className='flex gap-4'>
+          <div className='flex gap-4 max-sm:flex-col max-sm:gap-2'>
             <div className='flex flex-col w-full'>
               <p>Nombre</p>
               <Input setValue={setInputNombreValue} value={inputNombreValue} type='text' placeholder='Sebastian'/>
@@ -124,12 +124,12 @@ export function CrearAprendiz() {
           </div>
 
 
-          <div className='flex gap-4'>
+          <div className='flex gap-4 max-sm:flex-col max-sm:gap-2'>
             <div className='flex items-center w-full'>
               <Select onChange={selectDepartamento} value={currentDepartamento} title='Departamento' options={departamentos}/>
             </div>
             <div className='flex items-center w-full'>
-              <Select onChange={selectSede} title='Sede' options={municipios} />
+              <Select onChange={selectSede} title='Municipio' options={municipios} />
             </div>
           </div>
           <div className='flex items-center w-full'>

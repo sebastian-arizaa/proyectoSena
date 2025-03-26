@@ -53,10 +53,10 @@ export function Datos() {
       <ContentLayout>
         <MenuContainer/>
         <div className='flex flex-col w-full h-full'>
-          <div className='flex items-end gap-4 py-4'>
+          <div className='flex items-end gap-4 py-4 max-sm:grid max-sm:gap-2'>
             <Select value={currentDepartamento} onChange={selectDepartamento} title='Departamento' options={departamentos}/>
             <Select value={currentMunicipio} onChange={selectMunicipio} title='Municipio' options={municipios}/>
-            <div className='flex items-center gap-2 w-2/6 max-w-[500px] h-14'>
+            <div className='flex items-center gap-2 w-2/6 max-w-[500px] h-14 max-sm:w-full'>
               <p className='flex items-center w-min'>Formacion:</p>
               <div className='w-full'>
                 <Input value={inputFormacionValue} setValue={setInputFormacionValue} type='text'/>

@@ -144,7 +144,7 @@ export function PerfilAdministrador() {
       <ContentLayout>
         <MenuContainer/>
         <Form onClicks={returnOnClicks()} toggleEdit={toggleEdit} isCreating={false} isEditing={isEditing}  title="Perfil Administrador">
-          <div className='flex gap-4'>
+          <div className='flex gap-4 max-sm:flex-col max-sm:gap-2'>
             <div className='flex flex-col w-full'>
               <p>Nombre</p>
               <Input disabled={!isEditing} value={inputNombreValue} setValue={setInputNombreValue}  type='text'/>

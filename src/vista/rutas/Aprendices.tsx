@@ -31,8 +31,8 @@ export function Aprendices() {
       <ContentLayout>
         <MenuContainer/>
         <div className='flex flex-col w-full h-full'>
-          <div className='flex items-end gap-4 py-4'>
-            <div className='flex items-center gap-2 w-2/6 max-w-[500px] h-14'>
+          <div className='flex items-end gap-4 py-4 max-sm:grid'>
+            <div className='flex items-center gap-2 w-2/6 max-w-[500px] h-14 max-sm:w-full'>
               <p className='flex items-center w-min'>Nombre:</p>
               <div className='w-full'>
                 <Input setValue={setInputNombreValue}  type='text'/>

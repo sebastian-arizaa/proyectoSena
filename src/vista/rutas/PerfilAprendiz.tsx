@@ -94,6 +94,7 @@ export function PerfilAprendiz() {
   }
 
   useEffect(()=> {
+    console.log(aprendiz.nombre)
     setInputNombreValue(aprendiz.nombre)
     setInputApellidosValue(aprendiz.apellidos)
     setInputNumeroIdentificacionValue(aprendiz.numeroIdentificacion)
@@ -101,13 +102,8 @@ export function PerfilAprendiz() {
     setInputEmailValue(aprendiz.email ?? '')
 
     setCurrentDepartamento(aprendiz.nombreDepartamento)
-    setCurrentMunicipio(aprendiz.nombreSede)
+    setCurrentMunicipio(aprendiz.nombreMunicipio)
   }, [aprendiz])
-  
-  // useEffect(()=> {
-  //   const sedeEncontrada = sedes.find(sede => sede.nombre == aprendiz.nombreSede)
-  //   if(sedeEncontrada) setCurrentMunicipio(sedeEncontrada)
-  // }, [municipios])
 
   useEffect(()=> {
     setCurrentFormacion(aprendiz.nombreFormacion)
@@ -122,7 +118,7 @@ export function PerfilAprendiz() {
       <ContentLayout>
         <MenuContainer/>
         <Form  onClicks={returnOnClicks()} toggleEdit={toggleEdit} isCreating={false} isEditing={isEditing} title="Perfil Aprendiz">
-          <div className='flex gap-4'>
+          <div className='flex gap-4 max-sm:flex-col max-sm:gap-2'>
             <div className='flex flex-col w-full'>
               <p>Nombre</p>
               <Input setValue={setInputNombreValue} disabled={!isEditing} value={inputNombreValue} type='text'/>
@@ -146,12 +142,12 @@ export function PerfilAprendiz() {
           </div>
 
 
-          <div className='flex gap-4'>
+          <div className='flex gap-4 max-sm:flex-col max-sm:gap-2'>
             <div className='flex items-center w-full'>
               <Select value={currentDepartamento} onChange={selectDepartamento} title='Departamento' disabled={!isEditing} options={departamentos}/>
             </div>
             <div className='flex items-center w-full'>
-              <Select value={currentMunicipio} onChange={selectSede} title='Sede' disabled={!isEditing} options={municipios} />
+              <Select value={currentMunicipio} onChange={selectSede} title='Municipio' disabled={!isEditing} options={municipios} />
             </div>
           </div>
           <div className='flex items-center w-full'>

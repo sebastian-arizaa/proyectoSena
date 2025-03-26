@@ -97,7 +97,7 @@ export function CrearFormacion() {
       <ContentLayout>
         <MenuContainer/>
         <Form isEditing={true} onClicks={returnOnClicks()}  isCreating={true} title="Crear Formación">
-          <div className='flex gap-4'>
+          <div className='flex gap-4 max-sm:flex-col max-sm:gap-2'>
             <div className='flex items-center w-full'>
               <Select value={currentDepartamento} onChange={selectDepartamento} title='Departamento' options={departamentos}/>
             </div>
