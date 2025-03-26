@@ -2,7 +2,9 @@ import { AdminDepartamento } from "../modelo/admindepartamento.js"
 
 export class ControladorAdminDepartamento {
   static async traerTodos (req, res) {
+    console.log("Llega a traer todos")
     const data = await AdminDepartamento.traerTodos()
+    console.log("🚀 ~ ControladorAdminDepartamento ~ traerTodos ~ data:", data)
     res.json(data)
   }
 

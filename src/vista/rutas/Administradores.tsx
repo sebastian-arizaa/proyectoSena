@@ -1,4 +1,4 @@
-import {useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Button } from '../componentes/Button';
 import { Input } from '../componentes/Input';
 import { BaseLayout } from '../componentes/layouts/BaseLayout';
@@ -9,11 +9,11 @@ import Table from '../componentes/Table';
 import { useNavigate } from 'react-router';
 import useFetchAdministradores from '../hooks/useFetchAdministradores';
 import { Tipo } from '../types';
-import { useLocalStorage } from '../hooks/useLocalStorage';
+// import { useLocalStorage } from '../hooks/useLocalStorage';
 
 export function Administradores() {
   const navigate = useNavigate()
-  const {localStorageData} = useLocalStorage()
+  // const {localStorageData} = useLocalStorage()
   
   const [tipo, setTipo] = useState<Tipo>('Departamento')
   const {administradores, administradoresFiltrados, setAdministradoresFiltrados} = useFetchAdministradores({tipo})
@@ -35,9 +35,9 @@ export function Administradores() {
     setAdministradoresFiltrados(data)
   }
   
-  useEffect(()=> {
-    if(!localStorageData.isLogged) navigate('/ingresar')
-  }, [])
+  // useEffect(()=> {
+  //   if(!localStorageData.isLogged) navigate('/ingresar')
+  // }, [])
   
   return (
     <BaseLayout>
@@ -54,7 +54,7 @@ export function Administradores() {
               <Button onClick={filtrarAdministradoresPorNombre} type='primary'>Buscar</Button>
             </div>
             <div className='flex items-center h-full'>
-             <Button onClick={() => navigate('/crearadministrador')} type='primary'>Crear</Button>
+             <Button styles='max-sm:w-full' onClick={() => navigate('/crearadministrador')} type='primary'>Crear</Button>
             </div>
           </div>
           <Table type={returnTipo()} itemsProps={administradoresFiltrados}/>

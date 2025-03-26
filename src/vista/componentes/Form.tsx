@@ -19,7 +19,7 @@ export function Form({children, title, isCreating, isEditing, toggleEdit, onClic
   const navigate = useNavigate()
 
   return (
-    <div className='w-full pt-16 pb-4'>
+    <div className='flex justify-center w-full pt-16 pb-4'>
       <div className='w-2/3 min-w-[300px] max-w-[600px] pb-8 justify-self-center rounded shadow-lg overflow-hidden max-sm:min-w-[260px]'>
         <div className='py-2 px-4 bg-primary'>
           <p className='text-2xl text-center text-white font-semibold'>{title}</p>

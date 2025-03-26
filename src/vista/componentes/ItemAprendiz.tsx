@@ -13,9 +13,11 @@ export function ItemAprendiz({Icon, itemData}: Props) {
   const navigate = useNavigate()
   const [formacion, setFormacion] = useState<Formacion | null>(null)
 
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
   useEffect(()=> {
     const getFormacion = async () => {
-      const {data} = await axios(`http://localhost:3000/formaciones/uno/${itemData.idFormacion}`)
+      const {data} = await axios(`${API_URL}/formaciones/uno/${itemData.idFormacion}`)
       setFormacion(data[0])
     }
     getFormacion()

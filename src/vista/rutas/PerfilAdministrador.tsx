@@ -11,11 +11,11 @@ import { useFetchDepartamentos } from '../hooks/useFetchDepartamentos';
 import { AdminDepartamento, AdminSede, Tipo } from '../types';
 import { useFetchMunicipio } from '../hooks/useFetchMunicipio';
 import axios from 'axios';
-import { useLocalStorage } from '../hooks/useLocalStorage';
+// import { useLocalStorage } from '../hooks/useLocalStorage';
 
 export function PerfilAdministrador() {
   const navigate = useNavigate()
-  const {localStorageData} = useLocalStorage()
+  // const {localStorageData} = useLocalStorage()
 
   const {numeroIdentificacion, tipo} = useParams<{numeroIdentificacion: string, tipo: Tipo}>()
   const [administrador] = useFetchAdministrador({numeroIdentificacion, tipo})
@@ -31,6 +31,8 @@ export function PerfilAdministrador() {
   const [currentMunicipio, setCurrentMunicipio] = useState<string>('')
 
   const [isEditing, setIsEditing] = useState(false)
+
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
   const selectDepartamento = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value
@@ -62,7 +64,7 @@ export function PerfilAdministrador() {
         password: inputPasswordValue,
         nombreDepartamento: currentDepartamento
       }
-      const {status} = await axios.patch(`http://localhost:3000/admindepartamento/${numeroIdentificacion}`, adminDepartamento)
+      const {status} = await axios.patch(`${API_URL}/admindepartamento/${numeroIdentificacion}`, adminDepartamento)
       if(status == 200) {
         setIsEditing(false)
       }
@@ -75,7 +77,7 @@ export function PerfilAdministrador() {
         nombreDepartamento: currentDepartamento,
         nombreMunicipio: currentMunicipio
       }
-      const {status} = await axios.patch(`http://localhost:3000/adminsede/${numeroIdentificacion}`, adminSede)
+      const {status} = await axios.patch(`${API_URL}/adminsede/${numeroIdentificacion}`, adminSede)
       if(status == 200) {
         setIsEditing(false)
       } 
@@ -84,12 +86,12 @@ export function PerfilAdministrador() {
 
   const eliminar = async() => {
     if(tipo == 'Departamento') {
-      const {status} = await axios.delete(`http://localhost:3000/admindepartamento/${numeroIdentificacion}`)
+      const {status} = await axios.delete(`${API_URL}/admindepartamento/${numeroIdentificacion}`)
       if(status == 200) {
         navigate('/administradores')
       }
     }else if(tipo == 'Sede') {
-      const {status} = await axios.delete(`http://localhost:3000/adminsede/${numeroIdentificacion}`)
+      const {status} = await axios.delete(`${API_URL}/adminsede/${numeroIdentificacion}`)
       if(status == 200) {
         navigate('/administradores')
       }
@@ -135,9 +137,9 @@ export function PerfilAdministrador() {
     }
   }, [administrador])
 
-  useEffect(()=> {
-    if(!localStorageData.isLogged) navigate('/ingresar')
-  }, [])
+  // useEffect(()=> {
+  //   if(!localStorageData.isLogged) navigate('/ingresar')
+  // }, [])
 
   return (
     <BaseLayout>

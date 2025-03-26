@@ -3,19 +3,19 @@ import { BaseLayout } from '../componentes/layouts/BaseLayout';
 import { ContentLayout } from '../componentes/layouts/ContentLayout';
 import { MenuContainer } from '../componentes/MenuContainer';
 import { Form } from '../componentes/Form';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Select } from '../componentes/Select';
 import { Tipo } from '../types';
 import { useFetchDepartamentos } from '../hooks/useFetchDepartamentos';
 import { useFetchMunicipio } from '../hooks/useFetchMunicipio';
 import { AdminDepartamento, AdminSede } from '../types';
 import axios from 'axios';
-import { useNavigate } from 'react-router';
-import { useLocalStorage } from '../hooks/useLocalStorage';
+// import { useNavigate } from 'react-router';
+// import { useLocalStorage } from '../hooks/useLocalStorage';
 
 export function CrearAdministrador() {
-  const navigate = useNavigate()
-  const {localStorageData} = useLocalStorage()
+  // const navigate = useNavigate()
+  // const {localStorageData} = useLocalStorage()
 
   const [inputNombreValue, setInputNombreValue] = useState('')
   const [inputApellidosValue, setInputApellidosValue] = useState('')
@@ -28,6 +28,9 @@ export function CrearAdministrador() {
   const [currentDepartamento, setCurrentDepartamento] = useState<string>('')
   const {municipios, setMunicipio} = useFetchMunicipio({currentDepartamento, tipo})
   const [currentMunicipio, setCurrentMunicipio] = useState<string>('')
+
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 
   const selectTipo = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value
@@ -72,7 +75,7 @@ export function CrearAdministrador() {
         password: inputPasswordValue,
         nombreDepartamento: currentDepartamento,
       }
-      const {status} = await axios.post('http://localhost:3000/admindepartamento', administrador)
+      const {status} = await axios.post(`${API_URL}/admindepartamento`, administrador)
       if(status == 200) {
         limpiarFormulario()
       }
@@ -92,7 +95,7 @@ export function CrearAdministrador() {
         nombreDepartamento: currentDepartamento,
         nombreMunicipio: currentMunicipio
       }
-      const {status} = await axios.post('http://localhost:3000/adminsede', administrador)
+      const {status} = await axios.post(`${API_URL}/adminsede`, administrador)
       if(status == 200) {
         limpiarFormulario()
       }
@@ -125,9 +128,9 @@ export function CrearAdministrador() {
     return <></>
   }
 
-  useEffect(()=> {
-    if(!localStorageData.isLogged) navigate('/ingresar')
-  }, [])
+  // useEffect(()=> {
+  //   if(!localStorageData.isLogged) navigate('/ingresar')
+  // }, [])
 
   return (
     <BaseLayout>

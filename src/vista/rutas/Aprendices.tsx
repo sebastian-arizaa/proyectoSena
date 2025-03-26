@@ -5,13 +5,13 @@ import { BaseLayout } from '../componentes/layouts/BaseLayout';
 import { ContentLayout } from '../componentes/layouts/ContentLayout';
 import { MenuContainer } from '../componentes/MenuContainer';
 import Table from '../componentes/Table';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import useFetchAprendices from '../hooks/useFetchAprendices';
-import { useLocalStorage } from '../hooks/useLocalStorage';
+// import { useLocalStorage } from '../hooks/useLocalStorage';
 
 export function Aprendices() {
   const navigate = useNavigate()
-  const {localStorageData} = useLocalStorage()
+  // const {localStorageData} = useLocalStorage()
   
   const {idFormacion} = useParams()
   const {aprendices, aprendicesFiltrados, setAprendicesFiltrados} = useFetchAprendices({idFormacion: Number(idFormacion)})
@@ -22,9 +22,9 @@ export function Aprendices() {
     setAprendicesFiltrados(filtrados)
   }
 
-  useEffect(()=> {
-    if(!localStorageData.isLogged) navigate('/ingresar')
-  }, [])
+  // useEffect(()=> {
+  //   if(!localStorageData.isLogged) navigate('/ingresar')
+  // }, [])
 
   return (
     <BaseLayout>
@@ -40,7 +40,7 @@ export function Aprendices() {
               <Button onClick={filtrarAprendices} type='primary'>Buscar</Button>
             </div>
             <div className='flex items-center h-full'>
-             <Button onClick={() => navigate('/crearaprendiz')} type='primary'>Crear</Button>
+             <Button styles='max-sm:w-full' onClick={() => navigate('/crearaprendiz')} type='primary'>Crear</Button>
             </div>
           </div>
           <Table type='aprendices' itemsProps={aprendicesFiltrados}/>

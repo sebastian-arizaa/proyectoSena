@@ -11,11 +11,11 @@ import { useFetchDepartamentos } from '../hooks/useFetchDepartamentos';
 import { Formacion } from '../types';
 import { useFetchMunicipio } from '../hooks/useFetchMunicipio';
 import axios from 'axios';
-import { useLocalStorage } from '../hooks/useLocalStorage';
+// import { useLocalStorage } from '../hooks/useLocalStorage';
 
 export function PerfilFormacion() {
   const navigate = useNavigate()   
-  const {localStorageData} = useLocalStorage()
+  // const {localStorageData} = useLocalStorage()
 
   const {numeroIdentificacion} = useParams()
   const [formacion] = useFetchFormacion({numeroIdentificacion})
@@ -32,6 +32,8 @@ export function PerfilFormacion() {
   const [currentTipoFormacion, setCurrentTipoFormacion] = useState<string>('')
 
   const [isEditing, setIsEditing] = useState(false)
+
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
   useEffect(()=> {
 
@@ -88,14 +90,14 @@ export function PerfilFormacion() {
       nombreMunicipio: currentMunicipio
     }
 
-    const {status} = await axios.patch(`http://localhost:3000/formaciones/${numeroIdentificacion}`, newFormacion)
+    const {status} = await axios.patch(`${API_URL}/formaciones/${numeroIdentificacion}`, newFormacion)
     if(status == 200) {
       navigate('/formaciones')
     }
   }
 
   const eliminar = async() => {
-    const {status} = await axios.delete(`http://localhost:3000/formaciones/${numeroIdentificacion}`)
+    const {status} = await axios.delete(`${API_URL}/formaciones/${numeroIdentificacion}`)
     if(status == 200) {
       navigate('/formaciones')
     }
@@ -108,9 +110,9 @@ export function PerfilFormacion() {
     }
   }
 
-  useEffect(()=> {
-    if(!localStorageData.isLogged) navigate('/ingresar')
-  }, [])
+  // useEffect(()=> {
+  //   if(!localStorageData.isLogged) navigate('/ingresar')
+  // }, [])
 
   return (
     <BaseLayout>

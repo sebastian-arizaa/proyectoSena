@@ -9,10 +9,12 @@ interface Props {
 export default function useFetchAprendiz({numeroIdentificacion}: Props) {
   const [aprendiz, setAprendiz] = useState<AprendizCompleto>(aprendizBase)  
   
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
   useEffect(()=> {
     if(numeroIdentificacion) {
       const getAprendiz = async () => {
-        const {data} = await axios(`http://localhost:3000/aprendices/uno/completo/${numeroIdentificacion}`)
+        const {data} = await axios(`${API_URL}/aprendices/uno/completo/${numeroIdentificacion}`)
         setAprendiz(data[0])
       }
       getAprendiz()

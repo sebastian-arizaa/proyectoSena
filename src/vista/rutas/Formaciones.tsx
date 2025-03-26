@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button } from '../componentes/Button';
 import { Input } from '../componentes/Input';
 import { BaseLayout } from '../componentes/layouts/BaseLayout';
@@ -10,12 +10,12 @@ import { useFetchDepartamentos } from '../hooks/useFetchDepartamentos';
 import { useFetchMunicipio } from '../hooks/useFetchMunicipio';
 import { useFetchFormaciones } from '../hooks/useFetchFormaciones';
 import { useNavigate } from 'react-router';
-import { useLocalStorage } from '../hooks/useLocalStorage';
+// import { useLocalStorage } from '../hooks/useLocalStorage';
 
 
-export function Datos() {
+export function Formaciones() {
   const navigate = useNavigate()
-  const {localStorageData} = useLocalStorage()
+  // const {localStorageData} = useLocalStorage()
 
   const [departamentos] = useFetchDepartamentos()
   const [currentDepartamento, setCurrentDepartamento] = useState<string>('Bogotá D.C.')
@@ -44,9 +44,9 @@ export function Datos() {
     setFormacionesFiltradas(filtradas)
   }
 
-  useEffect(()=> {
-    if(!localStorageData.isLogged) navigate('/ingresar')
-  }, [])
+  // useEffect(()=> {
+  //   if(!localStorageData.isLogged) navigate('/ingresar')
+  // }, [])
 
   return (
     <BaseLayout>
@@ -64,7 +64,7 @@ export function Datos() {
               <Button onClick={searchFormacion} type='primary'>Buscar</Button>
             </div>
             <div className='flex items-center h-full'>
-             <Button onClick={() => navigate('/crearformacion')} type='primary'>Crear</Button>
+             <Button styles='max-sm:w-full' onClick={() => navigate('/crearformacion')} type='primary'>Crear</Button>
             </div>
           </div>
           <Table type='formacion' itemsProps={formacionesFiltradas}/>

@@ -31,9 +31,10 @@ export default function Table({type, itemsProps}: Props) {
     return []
   }
 
+  const arrayItems = renderItems()
   return (
     <div className='flex flex-col gap-4 w-full h-full  py-4 border-t-4 border-t-primary '>
-      {renderItems()}
+      {arrayItems.length ? arrayItems : <p className='text-center text-black/40'>No hay elementos</p>}
       {/* <Pagination/> */}
     </div>
   )

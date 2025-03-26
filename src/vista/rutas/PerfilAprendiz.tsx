@@ -12,11 +12,11 @@ import { useFetchDepartamentos } from '../hooks/useFetchDepartamentos';
 import { useFetchMunicipio } from '../hooks/useFetchMunicipio';
 import { useFetchFormaciones } from '../hooks/useFetchFormaciones';
 import axios from 'axios';
-import { useLocalStorage } from '../hooks/useLocalStorage';
+// import { useLocalStorage } from '../hooks/useLocalStorage';
 
 export function PerfilAprendiz() {
   const navigate = useNavigate()
-  const {localStorageData} = useLocalStorage()
+  // const {localStorageData} = useLocalStorage()
   
   const {numeroIdentificacion} = useParams()
   const [aprendiz] = useFetchAprendiz({numeroIdentificacion: numeroIdentificacion ?? null})
@@ -34,6 +34,8 @@ export function PerfilAprendiz() {
   const [currentMunicipio, setCurrentMunicipio] = useState<string>('')
   const {formaciones} = useFetchFormaciones({currentMunicipio, municipios})
   const [currentFormacion, setCurrentFormacion] = useState<string>('')
+
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
   const selectDepartamento = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value
@@ -73,14 +75,14 @@ export function PerfilAprendiz() {
       idFormacion: newFormacion?.numeroIdentificacion ?? null
     }
 
-    const {status} = await axios.patch(`http://localhost:3000/aprendices/${numeroIdentificacion}`, newAprendiz)
+    const {status} = await axios.patch(`${API_URL}/aprendices/${numeroIdentificacion}`, newAprendiz)
     if(status) {
       navigate(`/aprendices/${aprendiz.idFormacion}`)
     }
   }
 
   const eliminar = async() => {
-    const {status} = await axios.delete(`http://localhost:3000/aprendices/${numeroIdentificacion}`)
+    const {status} = await axios.delete(`${API_URL}/aprendices/${numeroIdentificacion}`)
     if(status == 200) {
       navigate(`/aprendices/${aprendiz.idFormacion}`)
     }
@@ -109,9 +111,9 @@ export function PerfilAprendiz() {
     setCurrentFormacion(aprendiz.nombreFormacion)
   }, [currentMunicipio])
 
-  useEffect(()=> {
-    if(!localStorageData.isLogged) navigate('/ingresar')
-  }, [])
+  // useEffect(()=> {
+  //   if(!localStorageData.isLogged) navigate('/ingresar')
+  // }, [])
 
   return (
     <BaseLayout>
