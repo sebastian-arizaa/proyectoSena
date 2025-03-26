@@ -3,12 +3,14 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "proxy": "http://localhost:3000",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && vite build --outDir dist/server --ssr src/servidor/index.production.js",
     "lint": "eslint .",
     "preview": "vite preview",
-    "server": "node src/servidor/index.js"
+    "start": "node dist/server/index.production.js",
+    "server:dev": "node src/servidor/index.development.js"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.9",
@@ -21,6 +23,7 @@
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.4.0",
+    "serve": "^14.2.4",
     "tailwindcss": "^4.0.9"
   },
   "devDependencies": {
